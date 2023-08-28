@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-const methodOverride = require("method-override");
 const morgan = require("morgan");
 
 app.use(morgan("combined"));
@@ -9,8 +8,6 @@ app.use(morgan("combined"));
 // Use bodyParser middleware for URL-encoded and JSON data
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-app.use(methodOverride());
 
 let myLogger = (req, res, next) => {
   console.log(req.url);
