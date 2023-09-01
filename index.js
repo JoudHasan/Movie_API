@@ -1,7 +1,9 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const uuid = require("uuid");
 const morgan = require("morgan");
+const { update } = require("lodash");
 
 app.use(morgan("combined"));
 
@@ -21,25 +23,7 @@ app.use(myLogger);
 app.use(requestTime);
 
 app.get("/movies", (req, res) => {
-  // Return a JSON object with data about your top 10 movies
-  const moviesData = [
-    { title: "The Lives of Others", year: "2006", Director: "Florian Henckel" },
-    { title: "Good Bye, Lenin!", year: "2003", Director: "Wolfgang Becker" },
-    { title: "The Post", year: "2017", Director: "Steven Spielberg" },
-    { title: "Perfume", year: "2006", Director: "Tom Tykwer" },
-    { title: "In the mood for love", year: "2000", Director: "Wong Kar-wai" },
-    { title: "The Truman Show", year: "1998", Director: "Peter Weir" },
-    { title: "Lost in Translation", year: "2003", Director: "Sofia Coppola" },
-    { title: "Nostalgia", year: "1983", Director: "Andrei Tarkovsk" },
-    {
-      title: "The Killing of a Sacred Deer",
-      year: "2017",
-      Director: "Yorgos Lanthimos",
-    },
-    { title: "A Separation", year: "2011", Director: "Asghar Farhadi" },
-  ];
-
-  res.json(moviesData);
+ res.status(200).send.json (movies);
 });
 
 app.get("/", (req, res) => {
@@ -51,6 +35,109 @@ app.use(express.static("public"));
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something went wrong!");
+});
+
+// read
+app.get("movie/:title"),(req.res) => {
+  const {title} = req.params;
+  const movie = movies.find((movie) => movie.title === title);
+  if (movie) {
+    res.status(200).json(movie);
+  } else {
+    res.status(400).send("Movie not found");
+  }
+};
+//read
+app.get("/movies/gerne/:gerneName", (req, res) => {
+  const { gerneName } = req.params;
+  const gerne = movies.find((gerne) => movie.gerneName === gerneName);
+  if (gerne) {
+    res.status(200).json(gerne);
+  } else {
+    res.status(400).send("gerne not found");
+  }
+});
+//read
+app.get("/movies/director/:directorName", (req, res) => {
+  const { directorName } = req.params;
+  const director = movies.find(movies.director.name === directorName).director;
+  if (director) {
+    res.status(200).json(director);
+  } else {
+    res.status(400).send("director not found");
+  }
+});
+let users = [
+  {
+    id: 1,
+    name: "John",
+    username: "john",
+    password: "john123",
+    favoriteMovies: ["Good Bye, Lenin", "The Lives of Others"],
+  },
+  {
+    id: 2,
+    name: "Jane",
+    username: "jane",
+    password: "jane123",
+    favoriteMovies: ["The Lives of Others"],
+  },
+];
+//create
+app.post("/users", (req, res) => {
+  const newUser = req.body;
+if (newUser.name) {
+  newUser.id = uuid.v4();
+  users.push(newUser);
+  res.status(201).json(newUser);
+} else {
+  res.status(400).send("User must have a name");
+}
+});
+//update
+app.put("/users/:id", (req, res) => {
+  const { id } = req.params;
+  const { name } = req.body;
+  let users.find((user) => user.id === id);
+  if (user) {
+    user.name = update user.name;
+    res.status(200).json(user);
+  } else {
+    res.status(400).send("User not found");
+  }
+});
+//create
+app.post ("/users,:id/:movieTitle"), (req, res) => {
+  const { id, movieTitle } = req.params;
+  let user = users.find((user) => user.id === id);
+  if (user) {
+    user.favoriteMovies.push(movieTitle);
+    res.status(200).json(user);
+  } else {
+    res.status(400).send("User not found");
+  }
+};
+//delete
+app.delete ("/users/:id/:movieTitle"), (req, res) => {
+  const { id, movieTitle } = req.params;
+  let user = users.find((user) => user.id === id);
+  if (user) {
+    user.favoriteMovies = user.favoriteMovies.filter(title => title !== movieTitle);
+    res.status(200).json(user);
+  } else {
+    res.status(400).send("User not found");
+  }
+};
+//delete
+app.delete("/users/:id", (req, res) => {
+  const { id } = req.params;
+  users = users.find ((user) => user.id !== id);
+if (user) {
+  users = users.filter((user) => user.id !== id);
+  res.status(200).send ("User deleted");
+} else {
+  res.status(400).send("User not found");
+}
 });
 
 const port = 8080; // Choose a port number
