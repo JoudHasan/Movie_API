@@ -158,8 +158,6 @@ let movies = {
     ImageURL: "https://images.app.goo.gl/nVJnJTEpPgNaJ7QU7",
     Featured: false,
   },
-  // Add other movie objects here...
-};
 
 app.get("/movies", (req, res) => {
   const allMovies = Object.values(movies);
