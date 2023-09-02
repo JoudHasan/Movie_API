@@ -188,7 +188,7 @@ app.get("/movie/:title", (req, res) => {
 });
 
 //read
-app.get("/movies/gerne/:gerneName", (req, res) => {
+app.get("/movies/genre/:genreName", (req, res) => {
   const { gerneName } = req.params;
   const gerne = movies.find((gerne) => movie.gerneName === gerneName);
   if (gerne) {
@@ -242,7 +242,7 @@ app.put("/users/:id", (req, res) => {
   const { name } = req.body;
   let user = users.find((user) => user.id === id);
   if (user) {
-    user.name = user.name;
+    user.name = name;
     res.status(200).json(user);
   } else {
     res.status(400).send("User not found");
@@ -278,7 +278,7 @@ app.delete("/users/:id/:movieTitle", (req, res) => {
 //delete
 app.delete("/users/:id", (req, res) => {
   const { id } = req.params;
-  users = users.find((users) => user.id !== id);
+  users = users.filter((users) => user.id !== id);
   if (user) {
     users = users.filter((users) => user.id !== id);
     res.status(200).send("User deleted");
