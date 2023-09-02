@@ -22,8 +22,8 @@ let requestTime = (req, res, next) => {
 app.use(myLogger);
 app.use(requestTime);
 
-let movies = [
-  {
+let movies = {
+  "The Lives of Others": {
     Title: "The Lives of Others",
     Description:
       "In 1984, when an East German Stasi agent is ordered to spy on a writer, the more he discovers about the writer's disloyalty, the more his own faith in the Communist system is shaken.",
@@ -38,7 +38,7 @@ let movies = [
     ImageURL: "https://images.app.goo.gl/tukE2gj2t1MPqeL7A",
     Featured: false,
   },
-  {
+  "Good Bye, Lenin!": {
     Title: "Good Bye, Lenin!",
     Description:
       "In 1990, to protect his fragile mother from a fatal shock after a long coma, a young man must keep her from learning that her beloved nation of East Germany as she knew it has disappeared",
@@ -53,8 +53,7 @@ let movies = [
     ImageURL: "https://images.app.goo.gl/FQ9XLDjW5DRKriBv8",
     Featured: false,
   },
-  // Add other movie objects here...
-  {
+  "The Post": {
     Title: "The Post",
     Description:
       "The Post is a 2017 American semi-fiction historical political thriller film about The Washington Post and the publication of the Pentagon Papers.",
@@ -69,8 +68,103 @@ let movies = [
     ImageURL: "https://images.app.goo.gl/xfzoLKC4hV4Z4nFL9",
     Featured: false,
   },
+  Perfume: {
+    Title: "Perfume",
+    Description:
+      "Set in 18th century Paris, the story of a man with an extraordinarily acute sense of smell takes a dark turn when his quest to create the ultimate fragrance leads to murder.",
+    Genre: {
+      Name: "Crime Fiction",
+      Description:
+        "Crime fiction, detective story, murder mystery, mystery novel, and police novel are terms used to describe narratives that centre on criminal acts and especially on the investigation, either by an amateur or a professional detective, of a crime, often a murder.",
+    },
+    Director: {
+      Name: "Tom Tykwer",
+    },
+    ImageURL: "https://images.app.goo.gl/oVa5WGfFBjvKYoHV6",
+    Featured: false,
+  },
+  "In the mood for love": {
+    Title: "In the mood for love",
+    Description:
+      "Two neighbors form a strong bond after both suspect extramarital activities of their spouses. However, they agree to keep their bond platonic so as not to commit similar wrongs.",
+    Genre: {
+      Name: "Romance Drama",
+      Description:
+        "Romantic dramas usually revolve around an obstacle that prevents deep and true love between two people. Music is often employed to indicate the emotional mood, creating an atmosphere of greater insulation for the couple.",
+    },
+    Director: {
+      Name: "Kar-Wai Wong",
+    },
+    ImageURL: "https://images.app.goo.gl/AX425njuFMxZ2csPA",
+    Featured: false,
+  },
+  "The Truman Show": {
+    Title: "The Truman Show",
+    Description:
+      "An insurance salesman is oblivious of the fact that his entire life is a TV show and his family members are mere actors. As he starts noticing things and uncovers the truth, he decides to escape.",
+    Genre: {
+      Name: "Comedy Drama",
+      Description:
+        "Comedy is a genre of dramatic performance having a light or humorous tone that depicts amusing incidents and in which the characters ultimately triumph over adversity.",
+    },
+    Director: {
+      Name: "Peter Weir",
+    },
+    ImageURL: "https://images.app.goo.gl/imMok1n5QkTHcBfa6",
+    Featured: false,
+  },
+  "Lost in Translation": {
+    Title: "Lost in Translation",
+    Description:
+      "An American actor Bob, lands in Tokyo for an ad film and ends up meeting Charlotte, who's left behind by her photographer husband. Gradually, the two discover a friend within each other.",
+    Genre: {
+      Name: "Romance Comedy Drama",
+      Description:
+        "Comedy is a genre of dramatic performance having a light or humorous tone that depicts amusing incidents and in which the characters ultimately triumph over adversity.",
+    },
+    Director: {
+      Name: "Sofia Coppola",
+    },
+    ImageURL: "https://images.app.goo.gl/7wYNsWxaNDGFxzpQ8",
+    Featured: false,
+  },
+  Nostalgia: {
+    Title: "Nostalgia",
+    Description:
+      "A renowned Russian poet and his translator embark on a journey to find out more about the life of a Russian composer. Along the way, they try to understand the composer's mysterious ways.",
+    Genre: {
+      Name: "Drama",
+      Description:
+        "In film and television, drama is a category or genre of narrative fiction (or semi-fiction) intended to be more serious than humorous in tone.",
+    },
+    Director: {
+      Name: "Andrei Tarkovsky",
+    },
+    ImageURL: "https://images.app.goo.gl/eHxBKcUHJERx3WJ28",
+    Featured: false,
+  },
+  "The Killing of a Sacred Deer": {
+    Title: "The Killing of a Sacred Deer",
+    Description:
+      "A surgeon, takes an awkward teenage boy, Martin, under his wing. But things get worse for the Murphys when they find out that Martin has a sinister agenda of his own.",
+    Genre: {
+      Name: "Horror Thriller",
+      Description:
+        "Horror films often explore dark subject matter and may deal with transgressive topics or themes. Broad elements include monsters, apocalyptic events, and religious or folk beliefs.",
+    },
+    Director: {
+      Name: "Yorgos Lanthimos",
+    },
+    ImageURL: "https://images.app.goo.gl/nVJnJTEpPgNaJ7QU7",
+    Featured: false,
+  },
   // Add other movie objects here...
-];
+};
+
+app.get("/movies", (req, res) => {
+  const allMovies = Object.values(movies);
+  res.status(200).json(allMovies);
+});
 
 app.get("/movies", (req, res) => {
   res.status(200).json(movies);
