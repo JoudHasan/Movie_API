@@ -159,28 +159,24 @@ let movies = {
     Featured: false,
   },
 
-app.get("/movies", (req, res) => {
-  const allMovies = Object.values(movies);
-  res.status(200).json(allMovies);
-});
-
-app.get("/movies", (req, res) => {
+app.get('/movies', (req, res) => {
   res.status(200).json(movies);
 });
 
-app.get("/", (req, res) => {
+app.get('/', (req, res) => {
   res.send("Welcome to my movie app!");
 });
 
-app.use(express.static("public"));
+app.use(express.static("public));
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something went wrong!");
+  next(); 
 });
 
 // read
-app.get("/movie/:title", (req, res) => {
+app.get('/movie/:title', (req, res) => {
   const { title } = req.params;
   const movie = movies.find((movie) => movie.title === title);
   if (movie) {
@@ -189,8 +185,9 @@ app.get("/movie/:title", (req, res) => {
     res.status(400).send("Movie not found");
   }
 });
+
 //read
-app.get("/movies/gerne/:gerneName", (req, res) => {
+app.get('/movies/gerne/:gerneName', (req, res) => {
   const { gerneName } = req.params;
   const gerne = movies.find((gerne) => movie.gerneName === gerneName);
   if (gerne) {
@@ -199,8 +196,9 @@ app.get("/movies/gerne/:gerneName", (req, res) => {
     res.status(400).send("gerne not found");
   }
 });
+
 //read
-app.get("/movies/director/:directorName", (req, res) => {
+app.get('/movies/director/:directorName', (req, res) => {
   const { directorName } = req.params;
   const director = movies.find(movies.director.Name === directorName).director;
   if (director) {
@@ -208,6 +206,7 @@ app.get("/movies/director/:directorName", (req, res) => {
   } else {
     res.status(400).send("director not found");
   }
+
 });
 let users = [
   {
@@ -225,8 +224,9 @@ let users = [
     favoriteMovies: ["The Lives of Others"],
   },
 ];
+
 //create
-app.post("/users", (req, res) => {
+app.post('/users', (req, res) => {
   const newUser = req.body;
   if (newUser.name) {
     newUser.id = uuid.v4();
@@ -236,8 +236,9 @@ app.post("/users", (req, res) => {
     res.status(400).send("User must have a name");
   }
 });
+
 //update
-app.put("/users/:id", (req, res) => {
+app.put('/users/:id', (req, res) => {
   const { id } = req.params;
   const { name } = req.body;
   let user = users.find((user) => user.id === id);
@@ -248,8 +249,9 @@ app.put("/users/:id", (req, res) => {
     res.status(400).send("User not found");
   }
 });
+
 //create
-app.post("/users/:id/:movieTitle", (req, res) => {
+app.post('/users/:id/:movieTitle', (req, res) => {
   const { id, movieTitle } = req.params;
   let user = users.find((user) => user.id === id);
   if (user) {
@@ -259,8 +261,9 @@ app.post("/users/:id/:movieTitle", (req, res) => {
     res.status(400).send("User not found");
   }
 });
+
 //delete
-app.delete("/users/:id/:movieTitle", (req, res) => {
+app.delete('/users/:id/:movieTitle', (req, res) => {
   const { id, movieTitle } = req.params;
   let user = users.find((user) => user.id === id);
   if (user) {
@@ -272,12 +275,13 @@ app.delete("/users/:id/:movieTitle", (req, res) => {
     res.status(400).send("User not found");
   }
 });
+
 //delete
-app.delete("/users/:id", (req, res) => {
+app.delete('/users/:id', (req, res) => {
   const { id } = req.params;
-  users = users.find((user) => user.id !== id);
+  users = users.find((users) => user.id !== id);
   if (user) {
-    users = users.filter((user) => user.id !== id);
+    users = users.filter((users) => user.id !== id);
     res.status(200).send("User deleted");
   } else {
     res.status(400).send("User not found");
