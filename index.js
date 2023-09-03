@@ -21,9 +21,8 @@ let requestTime = (req, res, next) => {
 };
 app.use(myLogger);
 app.use(requestTime);
-
-let movies = {
-  "The Lives of Others": {
+let movies = [
+  {
     Title: "The Lives of Others",
     Description:
       "In 1984, when an East German Stasi agent is ordered to spy on a writer, the more he discovers about the writer's disloyalty, the more his own faith in the Communist system is shaken.",
@@ -38,7 +37,7 @@ let movies = {
     ImageURL: "https://images.app.goo.gl/tukE2gj2t1MPqeL7A",
     Featured: false,
   },
-  "Good Bye, Lenin!": {
+  {
     Title: "Good Bye, Lenin!",
     Description:
       "In 1990, to protect his fragile mother from a fatal shock after a long coma, a young man must keep her from learning that her beloved nation of East Germany as she knew it has disappeared",
@@ -53,7 +52,7 @@ let movies = {
     ImageURL: "https://images.app.goo.gl/FQ9XLDjW5DRKriBv8",
     Featured: false,
   },
-  "The Post": {
+  {
     Title: "The Post",
     Description:
       "The Post is a 2017 American semi-fiction historical political thriller film about The Washington Post and the publication of the Pentagon Papers.",
@@ -68,7 +67,7 @@ let movies = {
     ImageURL: "https://images.app.goo.gl/xfzoLKC4hV4Z4nFL9",
     Featured: false,
   },
-  Perfume: {
+  {
     Title: "Perfume",
     Description:
       "Set in 18th century Paris, the story of a man with an extraordinarily acute sense of smell takes a dark turn when his quest to create the ultimate fragrance leads to murder.",
@@ -83,8 +82,8 @@ let movies = {
     ImageURL: "https://images.app.goo.gl/oVa5WGfFBjvKYoHV6",
     Featured: false,
   },
-  "In the mood for love": {
-    Title: "In the mood for love",
+  {
+    Title: "In the Mood for Love",
     Description:
       "Two neighbors form a strong bond after both suspect extramarital activities of their spouses. However, they agree to keep their bond platonic so as not to commit similar wrongs.",
     Genre: {
@@ -98,7 +97,7 @@ let movies = {
     ImageURL: "https://images.app.goo.gl/AX425njuFMxZ2csPA",
     Featured: false,
   },
-  "The Truman Show": {
+  {
     Title: "The Truman Show",
     Description:
       "An insurance salesman is oblivious of the fact that his entire life is a TV show and his family members are mere actors. As he starts noticing things and uncovers the truth, he decides to escape.",
@@ -113,7 +112,7 @@ let movies = {
     ImageURL: "https://images.app.goo.gl/imMok1n5QkTHcBfa6",
     Featured: false,
   },
-  "Lost in Translation": {
+  {
     Title: "Lost in Translation",
     Description:
       "An American actor Bob, lands in Tokyo for an ad film and ends up meeting Charlotte, who's left behind by her photographer husband. Gradually, the two discover a friend within each other.",
@@ -128,7 +127,7 @@ let movies = {
     ImageURL: "https://images.app.goo.gl/7wYNsWxaNDGFxzpQ8",
     Featured: false,
   },
-  Nostalgia: {
+  {
     Title: "Nostalgia",
     Description:
       "A renowned Russian poet and his translator embark on a journey to find out more about the life of a Russian composer. Along the way, they try to understand the composer's mysterious ways.",
@@ -143,7 +142,7 @@ let movies = {
     ImageURL: "https://images.app.goo.gl/eHxBKcUHJERx3WJ28",
     Featured: false,
   },
-  "The Killing of a Sacred Deer": {
+  {
     Title: "The Killing of a Sacred Deer",
     Description:
       "A surgeon, takes an awkward teenage boy, Martin, under his wing. But things get worse for the Murphys when they find out that Martin has a sinister agenda of his own.",
@@ -158,8 +157,7 @@ let movies = {
     ImageURL: "https://images.app.goo.gl/nVJnJTEpPgNaJ7QU7",
     Featured: false,
   },
-};
-
+];
 app.get("/movies", (req, res) => {
   res.status(200).json(movies);
 });
@@ -175,37 +173,40 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something went wrong!");
   next();
 });
-
-// read
+//read
 app.get("/movie/:title", (req, res) => {
   const { title } = req.params;
-  const movie = movies.find((movie) => movie.title === title);
+  const movie = movies.find(
+    (movie) => movie.Title.toLowerCase() === title.toLowerCase()
+  );
   if (movie) {
     res.status(200).json(movie);
   } else {
     res.status(400).send("Movie not found");
   }
 });
-
 //read
 app.get("/movies/genre/:genreName", (req, res) => {
-  const { gerneName } = req.params;
-  const gerne = movies.find((gerne) => movie.gerneName === gerneName);
-  if (gerne) {
-    res.status(200).json(gerne);
+  const { genreName } = req.params;
+  const genre = movies.find(
+    (movie) => movie.Genre.Name.toLowerCase() === genreName.toLowerCase()
+  );
+  if (genre) {
+    res.status(200).json(genre);
   } else {
-    res.status(400).send("gerne not found");
+    res.status(400).send("Genre not found");
   }
 });
-
 //read
 app.get("/movies/director/:directorName", (req, res) => {
   const { directorName } = req.params;
-  const director = movies.find(movies.director.Name === directorName).director;
+  const director = movies.find(
+    (movie) => movie.Director.Name.toLowerCase() === directorName.toLowerCase()
+  );
   if (director) {
     res.status(200).json(director);
   } else {
-    res.status(400).send("director not found");
+    res.status(400).send("Director not found");
   }
 });
 let users = [
@@ -235,12 +236,11 @@ app.post("/users", (req, res) => {
     res.status(400).send("User must have a name");
   }
 });
-
 //update
 app.put("/users/:id", (req, res) => {
   const { id } = req.params;
   const { name } = req.body;
-  let user = users.find((user) => user.id === id);
+  let user = users.find((user) => user.id === Number(id));
   if (user) {
     user.name = name;
     res.status(200).json(user);
@@ -248,11 +248,10 @@ app.put("/users/:id", (req, res) => {
     res.status(400).send("User not found");
   }
 });
-
 //create
 app.post("/users/:id/:movieTitle", (req, res) => {
   const { id, movieTitle } = req.params;
-  let user = users.find((user) => user.id === id);
+  let user = users.find((user) => user.id === Number(id));
   if (user) {
     user.favoriteMovies.push(movieTitle);
     res.status(200).json(user);
@@ -260,11 +259,10 @@ app.post("/users/:id/:movieTitle", (req, res) => {
     res.status(400).send("User not found");
   }
 });
-
-//delete
+// delete
 app.delete("/users/:id/:movieTitle", (req, res) => {
   const { id, movieTitle } = req.params;
-  let user = users.find((user) => user.id === id);
+  let user = users.find((user) => user.id === Number(id));
   if (user) {
     user.favoriteMovies = user.favoriteMovies.filter(
       (title) => title !== movieTitle
@@ -274,20 +272,19 @@ app.delete("/users/:id/:movieTitle", (req, res) => {
     res.status(400).send("User not found");
   }
 });
-
 //delete
 app.delete("/users/:id", (req, res) => {
   const { id } = req.params;
-  users = users.filter((users) => user.id !== id);
-  if (user) {
-    users = users.filter((users) => user.id !== id);
+  let userIndex = users.findIndex((user) => user.id === Number(id));
+  if (userIndex !== -1) {
+    users.splice(userIndex, 1);
     res.status(200).send("User deleted");
   } else {
     res.status(400).send("User not found");
   }
 });
 
-const port = 8080; // Choose a port number
+const port = 8080;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
