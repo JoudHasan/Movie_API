@@ -7,7 +7,6 @@ const { update } = require("lodash");
 
 app.use(morgan("combined"));
 
-// Use bodyParser middleware for URL-encoded and JSON data
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -21,7 +20,9 @@ let requestTime = (req, res, next) => {
 };
 app.use(myLogger);
 app.use(requestTime);
+
 let movies = [
+  // "The Lives of Others": {
   {
     Title: "The Lives of Others",
     Description:
@@ -37,6 +38,7 @@ let movies = [
     ImageURL: "https://images.app.goo.gl/tukE2gj2t1MPqeL7A",
     Featured: false,
   },
+  // "Good Bye, Lenin!": {
   {
     Title: "Good Bye, Lenin!",
     Description:
@@ -52,6 +54,7 @@ let movies = [
     ImageURL: "https://images.app.goo.gl/FQ9XLDjW5DRKriBv8",
     Featured: false,
   },
+  // "The Post": {
   {
     Title: "The Post",
     Description:
@@ -67,6 +70,7 @@ let movies = [
     ImageURL: "https://images.app.goo.gl/xfzoLKC4hV4Z4nFL9",
     Featured: false,
   },
+  // Perfume: {
   {
     Title: "Perfume",
     Description:
@@ -82,8 +86,9 @@ let movies = [
     ImageURL: "https://images.app.goo.gl/oVa5WGfFBjvKYoHV6",
     Featured: false,
   },
+  // "In the mood for love": {
   {
-    Title: "In the Mood for Love",
+    Title: "In the mood for love",
     Description:
       "Two neighbors form a strong bond after both suspect extramarital activities of their spouses. However, they agree to keep their bond platonic so as not to commit similar wrongs.",
     Genre: {
@@ -97,6 +102,7 @@ let movies = [
     ImageURL: "https://images.app.goo.gl/AX425njuFMxZ2csPA",
     Featured: false,
   },
+  // "The Truman Show": {
   {
     Title: "The Truman Show",
     Description:
@@ -112,6 +118,7 @@ let movies = [
     ImageURL: "https://images.app.goo.gl/imMok1n5QkTHcBfa6",
     Featured: false,
   },
+  // "Lost in Translation": {
   {
     Title: "Lost in Translation",
     Description:
@@ -127,6 +134,7 @@ let movies = [
     ImageURL: "https://images.app.goo.gl/7wYNsWxaNDGFxzpQ8",
     Featured: false,
   },
+  // Nostalgia: {
   {
     Title: "Nostalgia",
     Description:
@@ -142,6 +150,7 @@ let movies = [
     ImageURL: "https://images.app.goo.gl/eHxBKcUHJERx3WJ28",
     Featured: false,
   },
+  // "The Killing of a Sacred Deer": {
   {
     Title: "The Killing of a Sacred Deer",
     Description:
@@ -158,6 +167,7 @@ let movies = [
     Featured: false,
   },
 ];
+
 app.get("/movies", (req, res) => {
   res.status(200).json(movies);
 });
@@ -173,7 +183,8 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something went wrong!");
   next();
 });
-//read //get movie by title
+
+// read
 app.get("/movie/:title", (req, res) => {
   const { title } = req.params;
   const movie = movies.find(
@@ -185,28 +196,30 @@ app.get("/movie/:title", (req, res) => {
     res.status(400).send("Movie not found");
   }
 });
+
 //read
-app.get("/movies/genre/:genreName", (req, res) => {
-  const { genreName } = req.params;
-  const genre = movies.find(
-    (movie) => movie.Genre.Name.toLowerCase() === genreName.toLowerCase()
+app.get("/movies/gerne/:gerneName", (req, res) => {
+  const { gerneName } = req.params;
+  const gerne = movies.find(
+    (gerne) => gerne.Genre.Name.toLowerCase() === gerneName.toLowerCase()
   );
-  if (genre) {
-    res.status(200).json(genre);
+  // const gerne = movies.find((gerne) => movie.gerneName === gerneName);
+  if (gerne) {
+    res.status(200).json(gerne);
   } else {
-    res.status(400).send("Genre not found");
+    res.status(400).send("gerne not found");
   }
 });
+
 //read
 app.get("/movies/director/:directorName", (req, res) => {
   const { directorName } = req.params;
-  const director = movies.find(
-    (movie) => movie.Director.Name.toLowerCase() === directorName.toLowerCase()
-  );
+  const director = movies.find((movie) => movie.Director.Name === directorName);
+  // const director = movies.find(movies.director.Name === directorName).director;
   if (director) {
     res.status(200).json(director);
   } else {
-    res.status(400).send("Director not found");
+    res.status(400).send("director not found");
   }
 });
 let users = [
@@ -236,6 +249,7 @@ app.post("/users", (req, res) => {
     res.status(400).send("User must have a name");
   }
 });
+
 //update
 app.put("/users/:id", (req, res) => {
   const { id } = req.params;
@@ -248,10 +262,13 @@ app.put("/users/:id", (req, res) => {
     res.status(400).send("User not found");
   }
 });
+
 //create
 app.post("/users/:id/:movieTitle", (req, res) => {
   const { id, movieTitle } = req.params;
+  // *** Convert the id from params to a number so the types match
   let user = users.find((user) => user.id === Number(id));
+  // let user = users.find((user) => user.id === id);
   if (user) {
     user.favoriteMovies.push(movieTitle);
     res.status(200).json(user);
@@ -259,7 +276,8 @@ app.post("/users/:id/:movieTitle", (req, res) => {
     res.status(400).send("User not found");
   }
 });
-// delete
+
+//delete
 app.delete("/users/:id/:movieTitle", (req, res) => {
   const { id, movieTitle } = req.params;
   let user = users.find((user) => user.id === Number(id));
@@ -272,19 +290,20 @@ app.delete("/users/:id/:movieTitle", (req, res) => {
     res.status(400).send("User not found");
   }
 });
+
 //delete
 app.delete("/users/:id", (req, res) => {
   const { id } = req.params;
-  let userIndex = users.findIndex((user) => user.id === Number(id));
-  if (userIndex !== -1) {
-    users.splice(userIndex, 1);
+  let user = users.find((user) => user.id === Number(id));
+  if (user) {
+    users = users.find((user) => user.id === Number(id));
     res.status(200).send("User deleted");
   } else {
     res.status(400).send("User not found");
   }
 });
 
-const port = 8080;
+const port = 8080; // Choose a port number
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
