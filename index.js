@@ -158,7 +158,7 @@ let movies = [
     Featured: false,
   },
 ];
-app.get("/movies", (req, res) => {
+pp.get("/movies", (req, res) => {
   res.status(200).json(movies);
 });
 
@@ -173,7 +173,7 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something went wrong!");
   next();
 });
-//read
+//read //get movie by title
 app.get("/movie/:title", (req, res) => {
   const { title } = req.params;
   const movie = movies.find(
