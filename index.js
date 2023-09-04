@@ -158,7 +158,7 @@ let movies = [
     Featured: false,
   },
 ];
-pp.get("/movies", (req, res) => {
+app.get("/movies", (req, res) => {
   res.status(200).json(movies);
 });
 
