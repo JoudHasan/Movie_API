@@ -203,7 +203,6 @@ app.get("/movies/gerne/:gerneName", (req, res) => {
   const gerne = movies.find(
     (gerne) => gerne.Genre.Name.toLowerCase() === gerneName.toLowerCase()
   );
-  // const gerne = movies.find((gerne) => movie.gerneName === gerneName);
   if (gerne) {
     res.status(200).json(gerne);
   } else {
@@ -215,7 +214,6 @@ app.get("/movies/gerne/:gerneName", (req, res) => {
 app.get("/movies/director/:directorName", (req, res) => {
   const { directorName } = req.params;
   const director = movies.find((movie) => movie.Director.Name === directorName);
-  // const director = movies.find(movies.director.Name === directorName).director;
   if (director) {
     res.status(200).json(director);
   } else {
