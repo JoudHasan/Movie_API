@@ -140,7 +140,7 @@ let movies = [
     Description:
       "A renowned Russian poet and his translator embark on a journey to find out more about the life of a Russian composer. Along the way, they try to understand the composer's mysterious ways.",
     Genre: {
-      Name: "Drama",
+      Name: " Drama",
       Description:
         "In film and television, drama is a category or genre of narrative fiction (or semi-fiction) intended to be more serious than humorous in tone.",
     },
