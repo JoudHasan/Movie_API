@@ -4,6 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/styles.css">
+
     <title>My Flix API Documentation</title>
 </head>
 
@@ -13,16 +17,17 @@
             My Flix app
         </h1>
         <p>
-            <b>Movie API App</b>
-            The Movie App is an exciting and user-friendly platform designed to cater to all your movie-related needs.
-            Whether you're a cinephile searching for the latest blockbusters or someone looking for hidden cinematic
-            gems,
-            our app provides a comprehensive movie-watching experience.
+            The web application will provide users with access to information about different
+            movies, directors, and genres. Users will be able to sign up, update their
+            personal information, and create a list of their favorite movies.
         </p>
     </div>
+
     <div class="container">
         <h2 class="text-left">My Flix API Documentation</h2>
     </div>
+
+    <!-- table  -->
     <div class="container">
         <table class="table table-striped table-bordered table-responsive{-sm|-md|-lg|-xl}" style="width:100%">
             <thead>
@@ -48,118 +53,162 @@
                     <td>GET</td>
                     <td>None</td>
                     <td>A JSON object holding data about a single movie, containing description, genre, director, image
-                        URL,
-                        and whether its featured or not property. Example:
-                        <pre>
-{
-    "Title": "The Lives of Others",
-    "Description": "In 1984, when an East German Stasi agent is ordered to spy on a writer...",
-    "Genre": {
-        "Name": "Drama",
-        "Description": "In film and television, drama is a category or genre of narrative fiction..."
-    },
-    "Director": {
-        "Name": "Florian Henckel"
-    },
-    "ImageURL": "https://images.app.goo.gl/tukE2gj2t1MPqeL7A",
-    "Featured": false
-}
-{
-    "Title": "Good Bye, Lenin!",
-    "Description": "In 1990, to protect his fragile mother from a fatal shock after a long coma...",
-    "Genre": {
-        "Name": "Drama-Comedy",
-        "Description": "Comedy is a genre of dramatic performance having a light or humorous tone..."
-    },
-    "Director": {
-        "Name": "Wolfgang Becker"
-    },
-    "ImageURL": "https://images.app.goo.gl/FQ9XLDjW5DRKriBv8",
-    "Featured": false
-}
-                        </pre>
+                        URL, and
+                        whether it’s featured or not property. Example:
+                        <code>
+                        {
+                            "Title": "The Lives of Others",
+                            "Description": "In 1984, when an East German Stasi agent is ordered to spy on a writer...",
+                            "Genre": {
+                                "Name": "Drama",
+                                "Description": "In film and television, drama is a category or genre of narrative fiction...",
+                            },
+                            "Director": {
+                                "Name": "Florian Henckel",
+                            },
+                            "ImageURL": "https://images.app.goo.gl/tukE2gj2t1MPqeL7A",
+                            "Featured": false
+                        }
+                    </code>
                     </td>
+                </tr>
+                <tr>
+                    <td>Get data about a genre by genre's name</td>
+                    <td>/movies/genre/:genreName</td>
+                    <td>GET</td>
+                    <td>none</td>
+                    <td>A JSON object holding data about a genre containing name and description properties. Example:
+                        <code>
+                            "Genre": {
+                                "Name": "Drama",
+                                "Description": "In film and television, drama is a category or genre of narrative fiction...",
+                            }
+                    </code>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Get data about a director by director's name</td>
+                    <td>/movies/directors/:directorName</td>
+                    <td>GET</td>
+                    <td>none</td>
+                    <td>A JSON object holding data about a director. Example:
+                        <code>
+                        {
+                            "Name": "Florian Henckel",
+                            "Bio": "Your director bio...",
+                            "Birth": "Your director birth date"
+                        }
+                    </code>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Add a new user</td>
+                    <td>/users</td>
+                    <td>POST</td>
+                    <td>A JSON object holding user data, structured like this:
+                        <code>
+                        {
+                            "id": 3,
+                            "name": "John Doe",
+                            "username": "johndoe",
+                            "password": "password123",
+                            "favoriteMovies": []
+                        }
+                    </code>
+                    </td>
+                    <td>A JSON object holding user data plus an ID and an array for placing favorite movies:
+                        <code>
+                        {
+                            "id": 3,
+                            "name": "John Doe",
+                            "username": "johndoe",
+                            "password": "password123",
+                            "favoriteMovies": [],
+                        }
+                    </code>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Update user info</td>
+                    <td>/users/:id</td>
+                    <td>PUT</td>
+                    <td>A JSON object holding the user info that should be changed. It should contain at least one of
+                        the following key/value pairs:
+                        <code>
+                        {
+                            "name": "New Name",
+                            "username": "New Username",
+                            "password": "New Password"
+                        }
+                    </code>
+                    </td>
+                    <td>A JSON object holding all user info with all key/values pair updated:
+                        <code>
+                        {
+                            "id": 3,
+                            "name": "New Name",
+                            "username": "New Username",
+                            "password": "New Password",
+                            "favoriteMovies": [],
+                        }
+                    </code>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Add a movie to the user's favorite list</td>
+                    <td>/users/:id/:movieTitle</td>
+                    <td>POST</td>
+                    <td>None</td>
+                    <td>A JSON object holding all user info with all key/values pair updated:
+                        <code>
+                        {
+                            "id": 3,
+                            "name": "John Doe",
+                            "username": "johndoe",
+                            "password": "password123",
+                            "favoriteMovies": ["The Lives of Others"],
+                        }
+                    </code>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Remove a movie from the user's favorite list</td>
+                    <td>/users/:id/:movieTitle</td>
+                    <td>DELETE</td>
+                    <td>None</td>
+                    <td>A JSON object holding all user info with all key/values pair updated:
+                        <code>
+                        {
+                            "id": 3,
+                            "name": "John Doe",
+                            "username": "johndoe",
+                            "password": "password123",
+                            "favoriteMovies": [],
+                        }
+                    </code>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Delete a user</td>
+                    <td>/users/:id</td>
+                    <td>DELETE</td>
+                    <td>None</td>
+                    <td>A JSON object confirming the user deletion.</td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <h2>Endpoints</h2>
-    <table>
-        <tr>
-            <th>Request</th>
-            <th>URL</th>
-            <th>Response</th>
-        </tr>
-        <tr>
-            <td>GET</td>
-            <td>/movies</td>
-            <td>JSON array of all movie data</td>
-        </tr>
-        <tr>
-            <td>GET</td>
-            <td>/movies/:title</td>
-            <td>JSON object containing data about a single movie by title</td>
-        </tr>
-        <tr>
-            <td>GET</td>
-            <td>/movies/search/:genre</td>
-            <td>JSON array of all movie data by genre</td>
-        </tr>
-        <tr>
-            <td>GET</td>
-            <td>/movies/search/:director</td>
-            <td>JSON array of all movie data by director</td>
-        </tr>
-        <tr>
-            <td>GET</td>
-            <td>/movies/search/:year</td>
-            <td>JSON array of all movie data by year</td>
-        </tr>
-        <tr>
-            <td>GET</td>
-            <td>/movies/search/:actor</td>
-            <td>JSON array of all movie data by actor</td>
-        </tr>
-        <tr>
-            <td>GET</td>
-            <td>/users</td>
-            <td>JSON array of all user data</td>
-        </tr>
-        <tr>
-            <td>GET</td>
-            <td>/users/:username</td>
-            <td>JSON object containing data about a single user by username</td>
-        </tr>
-        <tr>
-            <td>POST</td>
-            <td>/users</td>
-            <td>JSON object containing data about a single user by username</td>
-        </tr>
-        <tr>
-            <td>PUT</td>
-            <td>/users/:username</td>
-            <td>JSON object containing data about a single user by username</td>
-        </tr>
-        <tr>
-            <td>POST</td>
-            <td>/users/:username/favorites/:movieID</td>
-            <td>JSON object containing data about a single user by username</td>
-        </tr>
-        <tr>
-            <td>DELETE</td>
-            <td>/users/:username/favorites/:movieID</td>
-            <td>JSON object containing data about a single user by username</td>
-        </tr>
-        <tr>
-            <td>DELETE</td>
-            <td>/users/:username</td>
-            <td>JSON object containing data about a single user by username</td>
-        </tr>
 
-    </table>
-
-
+    <!-- imported scripts: jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
