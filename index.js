@@ -166,6 +166,21 @@ let movies = [
     ImageURL: "https://images.app.goo.gl/nVJnJTEpPgNaJ7QU7",
     Featured: false,
   },
+  {
+    Title: "The Tourist",
+    Description:
+      "Revolves around Frank, an American tourist visiting Italy to mend a broken heart. Elise is an extraordinary woman who deliberately crosses his path.",
+    Genre: {
+      Name: "Drama",
+      Description:
+        "In film and television, drama is a category or genre of narrative fiction (or semi-fiction) intended to be more serious than humorous in tone.",
+    },
+    Director: {
+      Name: "Florian Henckel",
+    },
+    ImageURL: "https://images.app.goo.gl/EeW4Dd3QXtAGfmqn9",
+    Featured: false,
+  },
 ];
 
 app.get("/movies", (req, res) => {
@@ -233,6 +248,13 @@ let users = [
     name: "Jane",
     username: "jane",
     password: "jane123",
+    favoriteMovies: ["The Lives of Others"],
+  },
+  {
+    id: 3,
+    name: "maria",
+    username: "maria",
+    password: "maria123",
     favoriteMovies: ["The Lives of Others"],
   },
 ];
