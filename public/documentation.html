@@ -46,6 +46,42 @@
                     <td>GET</td>
                     <td>none</td>
                     <td>A JSON object holding an array with all movies.</td>
+                    <pre>
+                        <code>
+                            [
+                            {
+                                "id": "6091a1e04f5d0f21b2b4f3f6",
+                                "title": "The Lives of Others",
+                                "description": "In 1984 East Berlin, an agent of the secret police, conducting surveillance on a writer and his lover, finds himself becoming increasingly absorbed by their lives.",
+                                "genre": {
+                                    "name": "Drama",
+                                    "description": "In film and television, drama is a category or genre of narrative fiction (or semi-fiction) intended to be more serious than humorous in tone."
+                                },
+                                "director": {
+                                    "name": "Florian Henckel",
+                                    "bio": "Florian Maria Georg Christian Graf Henckel von Donnersmarck is an Academy Award-winning German and Austrian film director.",
+                                    "birth": "1973"
+                                },
+                                "imageURL": "https://images.app.goo.gl/FQ9XLDjW5DRKriBv8"
+                            },
+                            {
+                                "id": "650947236f498361566d4390",
+                                "title": "The Post",
+                                "description": "the Post is a 2017 American semi-fiction historical political thriller film about The Washington Post and the publication of the Pentagon Papers. It was directed and produced by Steven Spielberg, and written by Liz Hannah and Josh Singer.",
+                                "genre": {
+                                    "name": "Historical drama",
+                                    "description": "Historical drama can be differentiated from historical fiction, which generally present fictional characters and events against a backdrop of historical events."
+                                },
+                                "director": {
+                                    "name": "Steven Spielberg",
+                                    "bio": "Steven Allan Spielberg is an American film director, producer, and screenwriter.",
+                                    "birth": "1946"
+                                },
+                                "imageURL": "https://images.app.goo.gl/xfzoLKC4hV4Z4nFL9"
+                            }
+                        ]
+                    </code>
+                </pre>
                 </tr>
                 <tr>
                     <td>Get data about a single movie by title</td>
@@ -54,22 +90,24 @@
                     <td>None</td>
                     <td>A JSON object holding data about a single movie, containing description, genre, director, image
                         URL, and
-                        whether it’s featured or not property. Example:
-                        <code>
-                        {
-                            "Title": "The Lives of Others",
-                            "Description": "In 1984, when an East German Stasi agent is ordered to spy on a writer...",
-                            "Genre": {
-                                "Name": "Drama",
-                                "Description": "In film and television, drama is a category or genre of narrative fiction...",
-                            },
-                            "Director": {
-                                "Name": "Florian Henckel",
-                            },
-                            "ImageURL": "https://images.app.goo.gl/tukE2gj2t1MPqeL7A",
-                            "Featured": false
-                        }
-                    </code>
+                        whether its featured or not property. Example:
+                        <pre>
+                            <code>
+                            {
+                                "Title": "The Lives of Others",
+                                "Description": "In 1984, when an East German Stasi agent is ordered to spy on a writer...",
+                                "Genre": {
+                                    "Name": "Drama",
+                                    "Description": "In film and television, drama is a category or genre of narrative fiction..."
+                                },
+                                "Director": {
+                                    "Name": "Florian Henckel"
+                                },
+                                "ImageURL": "https://images.app.goo.gl/tukE2gj2t1MPqeL7A",
+                                "Featured": true
+                            }
+                        </code>
+                    </pre>
                     </td>
                 </tr>
                 <tr>
@@ -78,12 +116,52 @@
                     <td>GET</td>
                     <td>none</td>
                     <td>A JSON object holding data about a genre containing name and description properties. Example:
-                        <code>
-                            "Genre": {
-                                "Name": "Drama",
-                                "Description": "In film and television, drama is a category or genre of narrative fiction...",
+                        <pre>
+                            <code>
+                                {
+                                    "Genre": {
+                                        "Name": "Drama",
+                                        "Description": "In film and television, drama is a category or genre of narrative fiction..."
+                                    }
+                                }
+                        </code>
+                    </pre>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Get all movies by a director</td>
+                    <td>/movies/directors/:directorName/movies</td>
+                    <td>GET</td>
+                    <td>none</td>
+                    <td>A JSON array holding objects, each representing a movie by the specified director. Example:
+                        <pre>
+                            <code>
+                        [
+                            {
+                                "id": "6091a1e04f5d0f21b2b4f3f6",
+                                "title": "The Lives of Others",
+                                "description": "In 1984 East Berlin, an agent of the secret police...",
+                                {
+                                    "Name": "Florian Henckel",
+                                    "Bio": "Florian Maria Georg Christian Graf Henckel von Donnersmarck is an Academy Award-winning German and Austrian film director.",
+                                    "Birth": "1973"
+                                }
+                                "imageURL": "https://images.app.goo.gl/FQ9XLDjW5DRKriBv8"
+                            },
+                            {
+                                "id": "6091a1e04f5d0f21b2b4f3f7",
+                                "title": "The Tourist",
+                                "description": "Revolves around Frank, an American tourist visiting Italy to mend a broken heart. Elise is an extraordinary woman who deliberately crosses his path.",
+                                "director": {
+                                    "name": "Florian Henckel",
+                                    "bio": "Florian Maria Georg Christian Graf Henckel von Donnersmarck is an Academy Award-winning German and Austrian film director.",
+                                    "birth": "1973"
+                                },
+                                "imageURL": "https://images.app.goo.gl/EeW4Dd3QXtAGfmqn9"
                             }
+                        ]
                     </code>
+                </pre>
                     </td>
                 </tr>
                 <tr>
@@ -92,13 +170,15 @@
                     <td>GET</td>
                     <td>none</td>
                     <td>A JSON object holding data about a director. Example:
-                        <code>
-                        {
-                            "Name": "Florian Henckel",
-                            "Bio": "Your director bio...",
-                            "Birth": "Your director birth date"
-                        }
+                        <pre>
+                            <code>
+                                {
+                                    "Name": "Florian Henckel",
+                                    "Bio": "Florian Maria Georg Christian Graf Henckel von Donnersmarck is an Academy Award-winning German and Austrian film director.",
+                                    "Birth": "1973"
+                                }
                     </code>
+                </pre>
                     </td>
                 </tr>
                 <tr>
@@ -106,26 +186,30 @@
                     <td>/users</td>
                     <td>POST</td>
                     <td>A JSON object holding user data, structured like this:
-                        <code>
-                        {
-                            "id": 3,
-                            "name": "John Doe",
-                            "username": "johndoe",
-                            "password": "password123",
-                            "favoriteMovies": []
-                        }
+                        <pre>
+                            <code>
+                                {
+                                    "id": "650a80a5940ff76d61be79dc",
+                                    "name": "John",
+                                    "username": "john",
+                                    "password": "john123",
+                                    "favoriteMovies": ["the lives of others"]
+                                }
                     </code>
+                </pre>
                     </td>
                     <td>A JSON object holding user data plus an ID and an array for placing favorite movies:
-                        <code>
+                        <pre>
+                            <code>
                         {
-                            "id": 3,
-                            "name": "John Doe",
-                            "username": "johndoe",
-                            "password": "password123",
-                            "favoriteMovies": [],
+                            "id": "650a80a5940ff76d61be79dc",
+                            "name": "John",
+                            "username": "john",
+                            "password": "john123",
+                            "favoriteMovies": ["the lives of others"],
                         }
                     </code>
+                </pre>
                     </td>
                 </tr>
                 <tr>
@@ -134,24 +218,28 @@
                     <td>PUT</td>
                     <td>A JSON object holding the user info that should be changed. It should contain at least one of
                         the following key/value pairs:
-                        <code>
+                        <pre>
+                            <code>
                         {
                             "name": "New Name",
                             "username": "New Username",
                             "password": "New Password"
                         }
                     </code>
+                </pre>
                     </td>
                     <td>A JSON object holding all user info with all key/values pair updated:
-                        <code>
+                        <pre>
+                            <code>
                         {
-                            "id": 3,
+                            "id": "650a80a5940ff76d61be79dc",
                             "name": "New Name",
                             "username": "New Username",
                             "password": "New Password",
-                            "favoriteMovies": [],
+                            "favoriteMovies": ["The Lives of Others"],
                         }
                     </code>
+                </pre>
                     </td>
                 </tr>
                 <tr>
@@ -160,15 +248,17 @@
                     <td>POST</td>
                     <td>None</td>
                     <td>A JSON object holding all user info with all key/values pair updated:
-                        <code>
+                        <pre>
+                            <code>
                         {
-                            "id": 3,
-                            "name": "John Doe",
-                            "username": "johndoe",
-                            "password": "password123",
+                            "id": "650a80a5940ff76d61be79dc",
+                            "name": "John",
+                            "username": "john",
+                            "password": "johnd123",
                             "favoriteMovies": ["The Lives of Others"],
                         }
                     </code>
+                </pre>
                     </td>
                 </tr>
                 <tr>
@@ -177,15 +267,17 @@
                     <td>DELETE</td>
                     <td>None</td>
                     <td>A JSON object holding all user info with all key/values pair updated:
-                        <code>
+                        <pre>
+                            <code>
                         {
-                            "id": 3,
-                            "name": "John Doe",
-                            "username": "johndoe",
-                            "password": "password123",
+                            "id": "650a80a5940ff76d61be79dc",
+                            "name": "John",
+                            "username": "john",
+                            "password": "john123",
                             "favoriteMovies": [],
                         }
                     </code>
+                </pre>
                     </td>
                 </tr>
                 <tr>

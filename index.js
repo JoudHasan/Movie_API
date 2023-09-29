@@ -1,3 +1,7 @@
+const mongoose = require("mongoose");
+const Models = require("./models.js");
+const Movies = Models.Movie;
+const Users = Models.User;
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
@@ -21,168 +25,6 @@ let requestTime = (req, res, next) => {
 app.use(myLogger);
 app.use(requestTime);
 
-let movies = [
-  // "The Lives of Others": {
-  {
-    Title: "The Lives of Others",
-    Description:
-      "In 1984, when an East German Stasi agent is ordered to spy on a writer, the more he discovers about the writer's disloyalty, the more his own faith in the Communist system is shaken.",
-    Genre: {
-      Name: "Drama",
-      Description:
-        "In film and television, drama is a category or genre of narrative fiction (or semi-fiction) intended to be more serious than humorous in tone.",
-    },
-    Director: {
-      Name: "Florian Henckel",
-    },
-    ImageURL: "https://images.app.goo.gl/tukE2gj2t1MPqeL7A",
-    Featured: false,
-  },
-  // "Good Bye, Lenin!": {
-  {
-    Title: "Good Bye, Lenin!",
-    Description:
-      "In 1990, to protect his fragile mother from a fatal shock after a long coma, a young man must keep her from learning that her beloved nation of East Germany as she knew it has disappeared",
-    Genre: {
-      Name: "Drama-Comedy",
-      Description:
-        "Comedy is a genre of dramatic performance having a light or humorous tone that depicts amusing incidents and in which the characters ultimately triumph over adversity.",
-    },
-    Director: {
-      Name: "Wolfgang Becker",
-    },
-    ImageURL: "https://images.app.goo.gl/FQ9XLDjW5DRKriBv8",
-    Featured: false,
-  },
-  // "The Post": {
-  {
-    Title: "The Post",
-    Description:
-      "The Post is a 2017 American semi-fiction historical political thriller film about The Washington Post and the publication of the Pentagon Papers.",
-    Genre: {
-      Name: "Historical drama",
-      Description:
-        "Historical drama (also period drama, period piece or just period) is a dramatic work set in a past time period, usually used in the context of film and television, which presents historical events and characters with varying degrees of fictional elements such as creative dialogue or fictional scenes which aim to compress separate events or illustrate a broader factual narrative.",
-    },
-    Director: {
-      Name: "Steven Spielberg",
-    },
-    ImageURL: "https://images.app.goo.gl/xfzoLKC4hV4Z4nFL9",
-    Featured: false,
-  },
-  // Perfume: {
-  {
-    Title: "Perfume",
-    Description:
-      "Set in 18th century Paris, the story of a man with an extraordinarily acute sense of smell takes a dark turn when his quest to create the ultimate fragrance leads to murder.",
-    Genre: {
-      Name: "Crime Fiction",
-      Description:
-        "Crime fiction, detective story, murder mystery, mystery novel, and police novel are terms used to describe narratives that centre on criminal acts and especially on the investigation, either by an amateur or a professional detective, of a crime, often a murder.",
-    },
-    Director: {
-      Name: "Tom Tykwer",
-    },
-    ImageURL: "https://images.app.goo.gl/oVa5WGfFBjvKYoHV6",
-    Featured: false,
-  },
-  // "In the mood for love": {
-  {
-    Title: "In the mood for love",
-    Description:
-      "Two neighbors form a strong bond after both suspect extramarital activities of their spouses. However, they agree to keep their bond platonic so as not to commit similar wrongs.",
-    Genre: {
-      Name: "Romance Drama",
-      Description:
-        "Romantic dramas usually revolve around an obstacle that prevents deep and true love between two people. Music is often employed to indicate the emotional mood, creating an atmosphere of greater insulation for the couple.",
-    },
-    Director: {
-      Name: "Kar-Wai Wong",
-    },
-    ImageURL: "https://images.app.goo.gl/AX425njuFMxZ2csPA",
-    Featured: false,
-  },
-  // "The Truman Show": {
-  {
-    Title: "The Truman Show",
-    Description:
-      "An insurance salesman is oblivious of the fact that his entire life is a TV show and his family members are mere actors. As he starts noticing things and uncovers the truth, he decides to escape.",
-    Genre: {
-      Name: "Comedy Drama",
-      Description:
-        "Comedy is a genre of dramatic performance having a light or humorous tone that depicts amusing incidents and in which the characters ultimately triumph over adversity.",
-    },
-    Director: {
-      Name: "Peter Weir",
-    },
-    ImageURL: "https://images.app.goo.gl/imMok1n5QkTHcBfa6",
-    Featured: false,
-  },
-  // "Lost in Translation": {
-  {
-    Title: "Lost in Translation",
-    Description:
-      "An American actor Bob, lands in Tokyo for an ad film and ends up meeting Charlotte, who's left behind by her photographer husband. Gradually, the two discover a friend within each other.",
-    Genre: {
-      Name: "Romance Comedy Drama",
-      Description:
-        "Comedy is a genre of dramatic performance having a light or humorous tone that depicts amusing incidents and in which the characters ultimately triumph over adversity.",
-    },
-    Director: {
-      Name: "Sofia Coppola",
-    },
-    ImageURL: "https://images.app.goo.gl/7wYNsWxaNDGFxzpQ8",
-    Featured: false,
-  },
-  // Nostalgia: {
-  {
-    Title: "Nostalgia",
-    Description:
-      "A renowned Russian poet and his translator embark on a journey to find out more about the life of a Russian composer. Along the way, they try to understand the composer's mysterious ways.",
-    Genre: {
-      Name: " Drama",
-      Description:
-        "In film and television, drama is a category or genre of narrative fiction (or semi-fiction) intended to be more serious than humorous in tone.",
-    },
-    Director: {
-      Name: "Andrei Tarkovsky",
-    },
-    ImageURL: "https://images.app.goo.gl/eHxBKcUHJERx3WJ28",
-    Featured: false,
-  },
-  // "The Killing of a Sacred Deer": {
-  {
-    Title: "The Killing of a Sacred Deer",
-    Description:
-      "A surgeon, takes an awkward teenage boy, Martin, under his wing. But things get worse for the Murphys when they find out that Martin has a sinister agenda of his own.",
-    Genre: {
-      Name: "Horror Thriller",
-      Description:
-        "Horror films often explore dark subject matter and may deal with transgressive topics or themes. Broad elements include monsters, apocalyptic events, and religious or folk beliefs.",
-    },
-    Director: {
-      Name: "Yorgos Lanthimos",
-    },
-    ImageURL: "https://images.app.goo.gl/nVJnJTEpPgNaJ7QU7",
-    Featured: false,
-  },
-  {
-    Title: "The Tourist",
-    Description:
-      "Revolves around Frank, an American tourist visiting Italy to mend a broken heart. Elise is an extraordinary woman who deliberately crosses his path.",
-    Genre: {
-      Name: "Drama",
-      Description:
-        "In film and television, drama is a category or genre of narrative fiction (or semi-fiction) intended to be more serious than humorous in tone.",
-    },
-    Director: {
-      Name: "Florian Henckel",
-    },
-    ImageURL: "https://images.app.goo.gl/EeW4Dd3QXtAGfmqn9",
-    Featured: false,
-  },
-];
-
 app.get("/movies", (req, res) => {
   res.status(200).json(movies);
 });
@@ -199,128 +41,285 @@ app.use((err, req, res, next) => {
   next();
 });
 
-// read
-app.get("/movie/:title", (req, res) => {
-  const { title } = req.params;
-  const movie = movies.find(
-    (movie) => movie.Title.toLowerCase() === title.toLowerCase()
-  );
-  if (movie) {
-    res.status(200).json(movie);
-  } else {
-    res.status(400).send("Movie not found");
-  }
+// Get all movies
+app.get("/movies", (req, res) => {
+  Movies.find()
+    .then((movies) => {
+      res.status(200).json(movies);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
-//read
-app.get("/movies/gerne/:gerneName", (req, res) => {
-  const { gerneName } = req.params;
-  const gerne = movies.find(
-    (gerne) => gerne.Genre.Name.toLowerCase() === gerneName.toLowerCase()
-  );
-  if (gerne) {
-    res.status(200).json(gerne);
-  } else {
-    res.status(400).send("gerne not found");
-  }
+// Get movie by title
+app.get("/movies/title/:Title", (req, res) => {
+  Movies.findOne({ Title: req.params.Title })
+    .then((movie) => {
+      if (!movie) {
+        return res
+          .status(404)
+          .send("Error: " + req.params.Title + " was not found");
+      }
+      res.status(200).json(movie);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
-//read
-app.get("/movies/director/:directorName", (req, res) => {
-  const { directorName } = req.params;
-  const director = movies.find((movie) => movie.Director.Name === directorName);
-  if (director) {
-    res.status(200).json(director);
-  } else {
-    res.status(400).send("director not found");
-  }
+// Get movies by genre name
+app.get("/movies/genre/:Genre", (req, res) => {
+  Movies.find({ "Genre.Name": req.params.Genre })
+    .then((movies) => {
+      if (movies.length == 0) {
+        return res
+          .status(404)
+          .send(
+            "Error: no movies found with the " +
+              req.params.Genre +
+              " genre type."
+          );
+      } else {
+        res.status(200).json(movies);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
-let users = [
-  {
-    id: 1,
-    name: "John",
-    username: "john",
-    password: "john123",
-    favoriteMovies: ["Good Bye, Lenin", "The Lives of Others"],
-  },
-  {
-    id: 2,
-    name: "Jane",
-    username: "jane",
-    password: "jane123",
-    favoriteMovies: ["The Lives of Others"],
-  },
-  {
-    id: 3,
-    name: "maria",
-    username: "maria",
-    password: "maria123",
-    favoriteMovies: ["The Lives of Others"],
-  },
-];
+
+// Get data about a genre by genre name
+app.get("/movies/genre_description/:Genre", (req, res) => {
+  Movies.findOne({ "Genre.Name": req.params.Genre })
+    .then((movie) => {
+      if (!movie) {
+        return res
+          .status(404)
+          .send("Error: " + req.params.Genre + " was not found");
+      } else {
+        res.status(200).json(movie.Genre.Description);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
+});
+
+// Get movies by director name
+app.get("/movies/directors/:Director", (req, res) => {
+  Movies.find({ "Director.Name": req.params.Director })
+    .then((movies) => {
+      if (movies.length == 0) {
+        return res
+          .status(404)
+          .send(
+            "Error: no movies found with the director " +
+              req.params.Director +
+              " name"
+          );
+      } else {
+        res.status(200).json(movies);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
+});
+// Get data about a director by name
+app.get("/movies/director_description/:Director", (req, res) => {
+  Movies.findOne({ "Director.Name": req.params.Director })
+    .then((movie) => {
+      if (!movie) {
+        return res
+          .status(404)
+          .send("Error: " + req.params.Director + " was not found");
+      } else {
+        res.status(200).json(movie.Director);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
+});
+
 //create
+app.post("/users", async (req, res) => {
+  await Users.findOne({ Username: req.body.Username })
+    .then((user) => {
+      if (user) {
+        return res.status(400).send(req.body.Username + "already exists");
+      } else {
+        Users.create({
+          Username: req.body.Username,
+          Password: req.body.Password,
+          Email: req.body.Email,
+          Birthday: req.body.Birthday,
+        })
+          .then((user) => {
+            res.status(201).json(user);
+          })
+          .catch((error) => {
+            console.error(error);
+            res.status(500).send("Error: " + error);
+          });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("Error: " + error);
+    });
+});
+
+//Get all users
+app.get("/users", (req, res) => {
+  Users.find()
+    .then((users) => {
+      res.status(200).json(users);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
+});
+
+/// Get a user by username
+app.get("/users/:Username", (req, res) => {
+  Users.findOne({ Username: req.params.Username })
+    .then((user) => {
+      if (!user) {
+        return res
+          .status(404)
+          .send("Error: " + req.params.Username + " was not found");
+      } else {
+        res.json(user);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
+});
+
+// Create a new user
 app.post("/users", (req, res) => {
-  const newUser = req.body;
-  if (newUser.name) {
-    newUser.id = uuid.v4();
-    users.push(newUser);
-    res.status(201).json(newUser);
-  } else {
-    res.status(400).send("User must have a name");
-  }
+  Users.findOne({ Username: req.body.Username })
+    .then((user) => {
+      if (user) {
+        return res.status(400).send(req.body.Username + " already exists");
+      } else {
+        Users.create({
+          Username: req.body.Username,
+          Password: req.body.Password,
+          Email: req.body.Email,
+          Birthday: req.body.Birthday,
+        })
+          .then((user) => {
+            res.status(201).json(user);
+          })
+          .catch((error) => {
+            console.error(error);
+            res.status(500).send("Error: " + error);
+          });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("Error: " + error);
+    });
 });
 
-//update
-app.put("/users/:id", (req, res) => {
-  const { id } = req.params;
-  const { name } = req.body;
-  let user = users.find((user) => user.id === Number(id));
-  if (user) {
-    user.name = name;
-    res.status(200).json(user);
-  } else {
-    res.status(400).send("User not found");
-  }
+// Add a movie to a user's list of favorites
+app.post("/users/:Username/movies/:MovieID", (req, res) => {
+  Users.findOneAndUpdate(
+    { Username: req.params.Username },
+    {
+      $addToSet: { FavoriteMovies: req.params.MovieID },
+    },
+    { new: true }
+  )
+    .then((updatedUser) => {
+      if (!updatedUser) {
+        return res.status(404).send("Error: User was not found");
+      } else {
+        res.json(updatedUser);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("Error: " + error);
+    });
 });
 
-//create
-app.post("/users/:id/:movieTitle", (req, res) => {
-  const { id, movieTitle } = req.params;
-  // *** Convert the id from params to a number so the types match
-  let user = users.find((user) => user.id === Number(id));
-  // let user = users.find((user) => user.id === id);
-  if (user) {
-    user.favoriteMovies.push(movieTitle);
-    res.status(200).json(user);
-  } else {
-    res.status(400).send("User not found");
-  }
+// Update a users data by username
+app.put("/users/:Username", (req, res) => {
+  Users.findOneAndUpdate(
+    { Username: req.params.Username },
+    {
+      $set: {
+        Username: req.body.Username,
+        Password: req.body.Password,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday,
+      },
+    },
+    { new: true }
+  )
+    .then((user) => {
+      if (!user) {
+        return res.status(404).send("Error: No user was found");
+      } else {
+        res.json(user);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
-//delete
-app.delete("/users/:id/:movieTitle", (req, res) => {
-  const { id, movieTitle } = req.params;
-  let user = users.find((user) => user.id === Number(id));
-  if (user) {
-    user.favoriteMovies = user.favoriteMovies.filter(
-      (title) => title !== movieTitle
-    );
-    res.status(200).json(user);
-  } else {
-    res.status(400).send("User not found");
-  }
+// Remove a movie to a user's list of favorites
+app.delete("/users/:Username/movies/:MovieID", (req, res) => {
+  Users.findOneAndUpdate(
+    { Username: req.params.Username },
+    {
+      $pull: { FavoriteMovies: req.params.MovieID },
+    },
+    { new: true }
+  )
+    .then((updatedUser) => {
+      if (!updatedUser) {
+        return res.status(404).send("Error: User not found");
+      } else {
+        res.json(updatedUser);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("Error: " + error);
+    });
 });
 
-//delete
-app.delete("/users/:id", (req, res) => {
-  const { id } = req.params;
-  let user = users.find((user) => user.id === Number(id));
-  if (user) {
-    users = users.find((user) => user.id === Number(id));
-    res.status(200).send("User deleted");
-  } else {
-    res.status(400).send("User not found");
-  }
+// Delete a user by username
+app.delete("/users/:Username", (req, res) => {
+  Users.findOneAndRemove({ Username: req.params.Username })
+    .then((user) => {
+      if (!user) {
+        res.status(404).send("User " + req.params.Username + " was not found");
+      } else {
+        res.status(200).send(req.params.Username + " was deleted.");
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
 const port = 8080; // Choose a port number

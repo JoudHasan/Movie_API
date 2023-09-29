@@ -6,3 +6,55 @@ body {
 #title {
   padding-bottom: 50px;
 }
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #f8f9fa;
+  padding-bottom: 20px; /* Added padding to the bottom of the page */
+}
+
+.container {
+  background-color: #ffffff;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 8px; /* Rounded corners for containers */
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1); /* Adding shadow for a bit of depth */
+}
+
+#title h1 {
+  color: #0056b3; /* Changing color of main heading */
+}
+
+h2 {
+  color: #0056b3; /* Changing color of sub-headings */
+}
+
+table {
+  margin-top: 20px; /* Added margin to the top of tables */
+}
+
+th,
+td {
+  padding: 12px; /* Added more padding to table cells */
+}
+
+code,
+pre {
+  background-color: #f4f4f4; /* Changing background color of code blocks */
+  padding: 10px; /* Added padding to code blocks */
+  border-radius: 4px; /* Rounded corners for code blocks */
+}
+
+pre {
+  overflow-x: auto; /* Added horizontal scrolling to pre if content overflows */
+}
+
+/* Added styling for paragraph */
+p {
+  line-height: 1.6; /* Increased line height for readability */
+  color: #666; /* Made text color lighter */
+}
+
+/* Adding a bit of styling to the table */
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
