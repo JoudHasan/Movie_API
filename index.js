@@ -313,7 +313,7 @@ app.delete("/users/:Username", (req, res) => {
       if (!user) {
         res.status(404).send("User " + req.params.Username + " was not found");
       } else {
-        res.status(200).send(req.params.Username + " was deleted.");
+        res.status(200).send(req.params.Username + " deleted.");
       }
     })
     .catch((err) => {
