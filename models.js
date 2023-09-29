@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-let movie = mongoose.model("Movie", movieSchema);
-let user = mongoose.model("User", userSchema);
 let movieSchema = mongoose.Schema({
   Title: { type: String, required: true },
   Description: { type: String, required: true },

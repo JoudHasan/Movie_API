@@ -25,10 +25,6 @@ let requestTime = (req, res, next) => {
 app.use(myLogger);
 app.use(requestTime);
 
-app.get("/movies", (req, res) => {
-  res.status(200).json(movies);
-});
-
 app.get("/", (req, res) => {
   res.send("Welcome to my movie app!");
 });
@@ -70,7 +66,7 @@ app.get("/movies/title/:Title", (req, res) => {
     });
 });
 
-// Get movies by genre name
+// Get movies by genre
 app.get("/movies/genre/:Genre", (req, res) => {
   Movies.find({ "Genre.Name": req.params.Genre })
     .then((movies) => {
@@ -92,7 +88,7 @@ app.get("/movies/genre/:Genre", (req, res) => {
     });
 });
 
-// Get data about a genre by genre name
+// Get data about a genre by genre
 app.get("/movies/genre_description/:Genre", (req, res) => {
   Movies.findOne({ "Genre.Name": req.params.Genre })
     .then((movie) => {
@@ -110,7 +106,7 @@ app.get("/movies/genre_description/:Genre", (req, res) => {
     });
 });
 
-// Get movies by director name
+// Get movies by director
 app.get("/movies/directors/:Director", (req, res) => {
   Movies.find({ "Director.Name": req.params.Director })
     .then((movies) => {
@@ -131,7 +127,7 @@ app.get("/movies/directors/:Director", (req, res) => {
       res.status(500).send("Error: " + err);
     });
 });
-// Get data about a director by name
+// Get data about a director
 app.get("/movies/director_description/:Director", (req, res) => {
   Movies.findOne({ "Director.Name": req.params.Director })
     .then((movie) => {
@@ -322,7 +318,6 @@ app.delete("/users/:Username", (req, res) => {
     });
 });
 
-const port = 8080; // Choose a port number
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(8080, (req, res) => {
+  console.log("App listening on port 8080");
 });
