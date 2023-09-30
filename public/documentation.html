@@ -182,6 +182,60 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>get all users</td>
+                    <td>/users</td>
+                    <td>get</td>
+                    <td>JSON object showing all users:
+                        <pre>
+                            <code>
+                                [{
+    "_id": "650a80a5940ff76d61be79dc",
+    "username": "john",
+    "password": "john123",
+    "Email": "john@gmail.com",
+    "Birthday": "1988-10-08T23:00:00.000Z",
+    "favoriteMovies": [
+        "Good Bye, Lenin",
+        "The Lives of Others" ],
+},
+{
+    "_id": "650a80d6940ff76d61be79dd",
+    "username": "jane",
+    "password": "jane123",
+    "Email": "jane@gmail.com",
+    "Birthday": "1973-06-03T23:00:00.000Z",
+    "favoriteMovies": [
+        "The Lives of Others"
+    ],
+    "FavoriteMovies": [
+        "650947b56f498361566d4391"
+    ]},
+{
+    "_id": "650a8125940ff76d61be79df",
+    "username": "sara",
+    "password": "sara123",
+    "Email": "sara@gmail.com",
+    "Birthday": "1999-05-01T22:00:00.000Z",
+    "favoriteMovies": [
+        "The Post"
+    ],
+},
+{
+    "_id": "650a8139940ff76d61be79e0",
+    "username": "joud",
+    "password": "joud123",
+    "Email": "joud@gmail.com",
+    "Birthday": "1984-08-03T22:00:00.000Z",
+    "favoriteMovies": [
+        "In the mood for love"
+    ]
+}
+]
+                    </code>
+                </pre>
+                    </td>
+
+                <tr>
                     <td>Add a new user</td>
                     <td>/users</td>
                     <td>POST</td>
@@ -190,8 +244,8 @@
                             <code>
                                 {
                                     "id": "650a80a5940ff76d61be79dc",
-                                    "name": "John",
-                                    "username": "john",
+                                    "userName": "john",
+                                    "Email":"john@gmail.com",
                                     "password": "john123",
                                     "favoriteMovies": ["the lives of others"]
                                 }
@@ -203,10 +257,10 @@
                             <code>
                         {
                             "id": "650a80a5940ff76d61be79dc",
-                            "name": "John",
-                            "username": "john",
+                            "userName": "john",
+                            "Email":"john@gmail.com",
                             "password": "john123",
-                            "favoriteMovies": ["the lives of others"],
+                            "favoriteMovies": ["the lives of others"]
                         }
                     </code>
                 </pre>
@@ -221,9 +275,10 @@
                         <pre>
                             <code>
                         {
-                            "name": "New Name",
                             "username": "New Username",
+                            "Email":"New Email",
                             "password": "New Password"
+                            "favoriteMovies": ["the lives of others"]
                         }
                     </code>
                 </pre>
@@ -233,10 +288,10 @@
                             <code>
                         {
                             "id": "650a80a5940ff76d61be79dc",
-                            "name": "New Name",
                             "username": "New Username",
+                            "Email":"New Email",
                             "password": "New Password",
-                            "favoriteMovies": ["The Lives of Others"],
+                            "favoriteMovies": ["The Lives of Others"]
                         }
                     </code>
                 </pre>
@@ -252,10 +307,10 @@
                             <code>
                         {
                             "id": "650a80a5940ff76d61be79dc",
-                            "name": "John",
                             "username": "john",
+                            "Email":"john@gmail.com",
                             "password": "johnd123",
-                            "favoriteMovies": ["The Lives of Others"],
+                            "favoriteMovies": ["The Lives of Others"]
                         }
                     </code>
                 </pre>
@@ -271,10 +326,10 @@
                             <code>
                         {
                             "id": "650a80a5940ff76d61be79dc",
-                            "name": "John",
                             "username": "john",
+                            "Email":"john@gmail.com",
                             "password": "john123",
-                            "favoriteMovies": [],
+                            "favoriteMovies": ["The Lives of Others"]
                         }
                     </code>
                 </pre>

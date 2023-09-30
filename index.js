@@ -31,11 +31,6 @@ app.get("/", (req, res) => {
 
 app.use(express.static("public"));
 
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Something went wrong!");
-  next();
-});
 // Get all movies
 app.get("/movies", (req, res) => {
   Movies.find()
@@ -174,12 +169,13 @@ app.get("/users/:Username", (req, res) => {
       res.status(500).send("Error: " + err);
     });
 });
-// Create a new user
-app.post("/users", (req, res) => {
-  Users.findOne({ Username: req.body.Username })
+
+//creat user
+app.post("/users", async (req, res) => {
+  await Users.findOne({ Username: req.body.Username })
     .then((user) => {
       if (user) {
-        return res.status(400).send(req.body.Username + " already exists");
+        return res.status(400).send(req.body.Username + "already exists");
       } else {
         Users.create({
           Username: req.body.Username,
@@ -274,11 +270,11 @@ app.delete("/users/:Username/movies/:MovieID", (req, res) => {
 });
 
 // Delete a user by username
-app.delete("/users/:Username", (req, res) => {
-  Users.findOneAndRemove({ Username: req.params.Username })
+app.delete("/users/:Username", async (req, res) => {
+  await Users.findOneAndRemove({ Username: req.params.Username })
     .then((user) => {
       if (!user) {
-        res.status(404).send("User " + req.params.Username + " was not found");
+        res.status(400).send(req.params.Username + " was not found");
       } else {
         res.status(200).send(req.params.Username + " was deleted.");
       }
@@ -289,6 +285,13 @@ app.delete("/users/:Username", (req, res) => {
     });
 });
 
-app.listen(8080, (req, res) => {
-  console.log("App listening on port 8080");
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Something went wrong!");
+  next();
+});
+
+const port = process.env.PORT || 8080;
+app.listen(port, "0.0.0.0", () => {
+  console.log("Your app is listening on port 8080.");
 });
