@@ -201,7 +201,7 @@ app.post("/users", async (req, res) => {
 // Add a movie to a user's list of favorites
 app.post("/users/:Username/movies/:MovieID", (req, res) => {
   Users.findOneAndUpdate(
-    { Username: req.params.Username },
+    { username: req.params.Username },
     {
       $addToSet: { FavoriteMovies: req.params.MovieID },
     },
@@ -223,7 +223,7 @@ app.post("/users/:Username/movies/:MovieID", (req, res) => {
 // Update a users data by username
 app.put("/users/:Username", (req, res) => {
   Users.findOneAndUpdate(
-    { Username: req.params.Username },
+    { username: req.params.Username },
     {
       $set: {
         Username: req.body.Username,
