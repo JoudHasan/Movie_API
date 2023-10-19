@@ -256,11 +256,13 @@ app.post(
 );
 
 // Update a users data by username
-// Update User
 app.put(
   "/users/:username",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    if (req.user.Username !== req.params.Username) {
+      return res.status(400).send("Permission denied");
+    }
     Users.findOneAndUpdate(
       { Username: req.params.username },
       {
