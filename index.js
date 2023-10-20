@@ -12,11 +12,10 @@ const { update } = require("lodash");
 app.use(morgan("combined"));
 
 app.use(bodyParser.urlencoded({ extended: true }));
-let auth = require("./auth")(app);
 const passport = require("passport");
 require("./passport");
 app.use(bodyParser.json());
-
+let auth = require("./auth")(app);
 let myLogger = (req, res, next) => {
   console.log(req.url);
   next();
@@ -255,16 +254,17 @@ app.post(
   }
 );
 
-// Update a users data by username
 app.put(
-  "/users/:username",
+  "/users/:Username",
   passport.authenticate("jwt", { session: false }),
-  (req, res) => {
+  async (req, res) => {
+    // CONDITION TO CHECK ADDED HERE
     if (req.user.Username !== req.params.Username) {
       return res.status(400).send("Permission denied");
     }
-    Users.findOneAndUpdate(
-      { Username: req.params.username },
+    // CONDITION ENDS
+    await Users.findOneAndUpdate(
+      { Username: req.params.Username },
       {
         $set: {
           Username: req.body.Username,
@@ -274,12 +274,12 @@ app.put(
         },
       },
       { new: true }
-    )
+    ) // This line makes sure that the updated document is returned
       .then((updatedUser) => {
-        res.status(200).json(updatedUser);
+        res.json(updatedUser);
       })
       .catch((err) => {
-        console.error(err);
+        console.log(err);
         res.status(500).send("Error: " + err);
       });
   }
