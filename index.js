@@ -282,34 +282,42 @@ app.post(
   }
 );
 
+// Update user information
 app.put(
-  "/users/:Username",
+  "/users/:username",
+  validateUserData,
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    // CONDITION TO CHECK ADDED HERE
-    if (req.user.Username !== req.params.Username) {
+    //handle errors of validation
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      //status code 422 - unprocessable content
+      return res.status(422).json({ errors: errors.array() });
+    }
+    if (req.user.username !== req.params.username) {
       return res.status(400).send("Permission denied");
     }
-    // CONDITION ENDS
-    await Users.findOneAndUpdate(
-      { Username: req.params.Username },
-      {
-        $set: {
-          Username: req.body.Username,
-          Password: req.body.Password,
-          Email: req.body.Email,
-          Birthday: req.body.Birthday,
+    try {
+      const { username, password, email, birthday } = req.body;
+      const saltRounds = 10;
+      const hashedPassword = await bycrpt.hash(password, saltRounds);
+      const updateUser = await User.findOneAndUpdate(
+        { username: req.params.username },
+        {
+          $set: {
+            username: username,
+            password: hashedPassword,
+            email: email,
+            birthday: birthday,
+          },
         },
-      },
-      { new: true }
-    ) // This line makes sure that the updated document is returned
-      .then((updatedUser) => {
-        res.json(updatedUser);
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).send("Error: " + err);
-      });
+        { new: true }
+      );
+      res.status(204).json(updateUser);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(`Error updating user information: ${err}`);
+    }
   }
 );
 
