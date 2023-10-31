@@ -285,7 +285,6 @@ app.post(
 // Update user information
 app.put(
   "/users/:username",
-  validateUserData,
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     //handle errors of validation
