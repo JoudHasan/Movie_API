@@ -1,3 +1,4 @@
+require("dotenv").config();
 const mongoose = require("mongoose");
 const Models = require("./models.js");
 const Movies = Models.Movie;
@@ -287,7 +288,7 @@ app.post(
 
 // Update user information
 app.put(
-  "/users/:username",
+  "/users/:Username",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     //handle errors of validation
@@ -296,26 +297,26 @@ app.put(
       //status code 422 - unprocessable content
       return res.status(422).json({ errors: errors.array() });
     }
-    if (req.user.username !== req.params.username) {
+    if (req.user.Username !== req.params.Username) {
       return res.status(400).send("Permission denied");
     }
     try {
-      const { username, password, email, birthday } = req.body;
+      const { Username, Password, Email, Birthday } = req.body;
       const saltRounds = 10;
-      const hashedPassword = await bycrpt.hash(password, saltRounds);
-      const updateUser = await User.findOneAndUpdate(
-        { username: req.params.username },
+      const hashedPassword = await Users.hashPassword(Password, saltRounds);
+      const updateUser = await Users.findOneAndUpdate(
+        { Username: req.params.Username },
         {
           $set: {
-            username: username,
-            password: hashedPassword,
-            email: email,
-            birthday: birthday,
+            Username: Username,
+            Password: hashedPassword,
+            Email: Email,
+            Birthday: Birthday,
           },
         },
         { new: true }
       );
-      res.status(204).json(updateUser);
+      res.status(200).json(updateUser);
     } catch (err) {
       console.error(err);
       res.status(500).send(`Error updating user information: ${err}`);
