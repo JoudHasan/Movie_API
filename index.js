@@ -36,6 +36,9 @@ app.get("/", (req, res) => {
 
 app.use(express.static("public"));
 
+//Connect to DB - use dotenv to not expose data
+mongoose.connect(process.env.DB_URL);
+
 // Get all movies
 app.get(
   "/movies",
