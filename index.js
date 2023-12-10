@@ -101,63 +101,6 @@ app.get(
       });
   }
 );
-// Get movies by director name without authentication
-app.get("/movies/directors/:Director", (req, res) => {
-  Movies.find({ "Director.Name": req.params.Director })
-    .then((movies) => {
-      if (movies.length == 0) {
-        return res
-          .status(404)
-          .send(
-            "Error: no movies found with the director " +
-              req.params.Director +
-              " name"
-          );
-      } else {
-        res.status(200).json(movies);
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send("Error: " + err);
-    });
-});
-
-// Get data about a director by name without authentication
-app.get("/movies/director_description/:Director", (req, res) => {
-  Movies.findOne({ "Director.Name": req.params.Director })
-    .then((movie) => {
-      if (!movie) {
-        return res
-          .status(404)
-          .send("Error: " + req.params.Director + " was not found");
-      } else {
-        res.status(200).json(movie.Director);
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send("Error: " + err);
-    });
-});
-
-// Get data about a genre by genre name without authentication
-app.get("/movies/genre_description/:Genre", (req, res) => {
-  Movies.findOne({ "Genre.Name": req.params.Genre })
-    .then((movie) => {
-      if (!movie) {
-        return res
-          .status(404)
-          .send("Error: " + req.params.Genre + " was not found");
-      } else {
-        res.status(200).json(movie.Genre.Description);
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send("Error: " + err);
-    });
-});
 // Get all users
 app.get(
   "/users",
