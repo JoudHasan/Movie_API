@@ -18,6 +18,7 @@ app.use(morgan("combined"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const passport = require("passport");
+//add login route
 let auth = require("./auth")(app);
 app.get("/", (req, res) => {
   res.send("Welcome to my movie app!");
