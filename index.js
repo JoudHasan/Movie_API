@@ -14,106 +14,88 @@ app.use(bodyParser.json());
 const cors = require("cors");
 app.use(cors());
 
-let myLogger = (req, res, next) => {
-  console.log(req.url);
-  next();
-};
-let requestTime = (req, res, next) => {
-  req.requestTime = Date.now();
-  next();
-};
 app.use(morgan("combined"));
-
 app.use(bodyParser.urlencoded({ extended: true }));
+
 const passport = require("passport");
-
-app.use(myLogger);
-app.use(requestTime);
-
+let auth = require("./auth")(app);
 app.get("/", (req, res) => {
   res.send("Welcome to my movie app!");
 });
 
 app.use(express.static("public"));
 
-// Connect to DB - use dotenv to not expose data
 mongoose.connect(process.env.DB_URL);
 
-// Get all movies with authentication
 app.get(
   "/movies",
   passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Movies.find()
-      .then((movies) => {
-        res.status(200).json(movies);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      });
+  async (req, res) => {
+    try {
+      const movies = await Movies.find();
+      res.status(200).json(movies);
+    } catch (err) {
+      console.error(err);
+      res
+        .status(500)
+        .json({ error: "Internal Server Error", details: err.message });
+    }
   }
 );
 
-// Get movie by title with authentication
 app.get(
   "/movies/title/:Title",
   passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Movies.findOne({ Title: req.params.Title })
-      .then((movie) => {
-        if (!movie) {
-          return res
-            .status(404)
-            .send("Error: " + req.params.Title + " was not found");
-        }
-        res.status(200).json(movie);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      });
+  async (req, res) => {
+    try {
+      const movie = await Movies.findOne({ Title: req.params.Title });
+      if (!movie) {
+        return res.status(404).send(`Error: ${req.params.Title} was not found`);
+      }
+      res.status(200).json(movie);
+    } catch (err) {
+      console.error(err);
+      res
+        .status(500)
+        .json({ error: "Internal Server Error", details: err.message });
+    }
   }
 );
 
-// Get movies by genre name with authentication
 app.get(
   "/movies/genre/:Genre",
   passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Movies.find({ "Genre.Name": req.params.Genre })
-      .then((movies) => {
-        if (movies.length == 0) {
-          return res
-            .status(404)
-            .send(
-              "Error: no movies found with the " +
-                req.params.Genre +
-                " genre type."
-            );
-        } else {
-          res.status(200).json(movies);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      });
+  async (req, res) => {
+    try {
+      const movies = await Movies.find({ "Genre.Name": req.params.Genre });
+      if (movies.length === 0) {
+        return res
+          .status(404)
+          .send(`Error: no movies found with ${req.params.Genre} genre`);
+      }
+      res.status(200).json(movies);
+    } catch (err) {
+      console.error(err);
+      res
+        .status(500)
+        .json({ error: "Internal Server Error", details: err.message });
+    }
   }
 );
-// Get all users
+
 app.get(
   "/users",
   passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Users.find()
-      .then((users) => {
-        res.status(200).json(users);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      });
+  async (req, res) => {
+    try {
+      const users = await Users.find();
+      res.status(200).json(users);
+    } catch (err) {
+      console.error(err);
+      res
+        .status(500)
+        .json({ error: "Internal Server Error", details: err.message });
+    }
   }
 );
 
@@ -293,6 +275,16 @@ app.delete(
       });
   }
 );
+
+// Login route
+// app.post(
+//   "/login",
+//   passport.authenticate("local", { session: false }),
+//   (req, res) => {
+//     //If authentication is successful, respond with a token or relevant information
+//     res.json({ message: "Login successful", user: req.user });
+//   }
+// );
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
