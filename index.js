@@ -18,7 +18,7 @@ app.use(morgan("combined"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const passport = require("passport");
-
+let auth = require("./auth")(app);
 app.get("/", (req, res) => {
   res.send("Welcome to my movie app!");
 });
@@ -277,14 +277,14 @@ app.delete(
 );
 
 // Login route
-app.post(
-  "/login",
-  passport.authenticate("local", { session: false }),
-  (req, res) => {
-    // If authentication is successful, respond with a token or relevant information
-    res.json({ message: "Login successful", user: req.user });
-  }
-);
+// app.post(
+//   "/login",
+//   passport.authenticate("local", { session: false }),
+//   (req, res) => {
+//     //If authentication is successful, respond with a token or relevant information
+//     res.json({ message: "Login successful", user: req.user });
+//   }
+// );
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
