@@ -208,7 +208,7 @@ app.put(
       return res.status(400).send("Permission denied");
     }
     try {
-      const { Username, Password, Email, Birthday } = req.body;
+      const { Username, Password, Email, Birthday, FavoriteMovies } = req.body;
       const saltRounds = 10;
       const hashedPassword = await Users.hashPassword(Password, saltRounds);
       const updateUser = await Users.findOneAndUpdate(
@@ -219,6 +219,7 @@ app.put(
             Password: hashedPassword,
             Email: Email,
             Birthday: Birthday,
+            FavoriteMovies: FavoriteMovies,
           },
         },
         { new: true }
@@ -276,16 +277,6 @@ app.delete(
       });
   }
 );
-
-// Login route
-// app.post(
-//   "/login",
-//   passport.authenticate("local", { session: false }),
-//   (req, res) => {
-//     //If authentication is successful, respond with a token or relevant information
-//     res.json({ message: "Login successful", user: req.user });
-//   }
-// );
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
