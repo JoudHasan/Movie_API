@@ -257,6 +257,24 @@ app.delete(
       });
   }
 );
+// Backend route to get favorite movies for a user
+app.get(
+  '/users/:Username/movies',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    try {
+      const user = await Users.findOne({ Username: req.params.Username }).populate('FavoriteMovies');
+      if (!user) {
+        return res.status(404).send('User not found');
+      }
+      res.status(200).json(user.FavoriteMovies);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    }
+  }
+);
+
 
 // Delete a user by username
 app.delete(
