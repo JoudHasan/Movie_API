@@ -14,344 +14,269 @@
 <body>
     <div class="container" id="title">
         <h1>
-            My Flix app
+            My Flix App API Documentation
         </h1>
         <p>
-            The web application will provide users with access to information about different
-            movies, directors, and genres. Users will be able to sign up, update their
-            personal information, and create a list of their favorite movies.
+            The web application provides users with access to information about different movies, directors, and genres.
+            Users can sign up, update their personal information, and create a list of their favorite movies.
         </p>
     </div>
 
     <div class="container">
-        <h2 class="text-left">My Flix API Documentation</h2>
+        <h2 class="text-left">API Endpoints</h2>
     </div>
 
-    <!-- table  -->
+    <!-- table -->
     <div class="container">
         <table class="table table-striped table-bordered table-responsive{-sm|-md|-lg|-xl}" style="width:100%">
             <thead>
                 <tr>
-                    <th class="col-2">Request</th>
-                    <th class="col-1">URL</th>
-                    <th class="col-1">HTTP Method</th>
-                    <th class="col-3">Request body data format</th>
-                    <th class="col-5">Response body data format</th>
+                    <th>Request</th>
+                    <th>URL</th>
+                    <th>HTTP Method</th>
+                    <th>Request Body</th>
+                    <th>Response Body</th>
                 </tr>
             </thead>
             <tbody>
+                <!-- Get all movies -->
                 <tr>
-                    <td>Get a list of ALL movies</td>
+                    <td>Get a list of all movies</td>
                     <td>/movies</td>
                     <td>GET</td>
-                    <td>none</td>
-                    <td>A JSON object holding an array with all movies.</td>
-                    <pre>
-                        <code>
-                            [
-                            {
-                                "id": "6091a1e04f5d0f21b2b4f3f6",
-                                "title": "The Lives of Others",
-                                "description": "In 1984 East Berlin, an agent of the secret police, conducting surveillance on a writer and his lover, finds himself becoming increasingly absorbed by their lives.",
-                                "genre": {
-                                    "name": "Drama",
-                                    "description": "In film and television, drama is a category or genre of narrative fiction (or semi-fiction) intended to be more serious than humorous in tone."
-                                },
-                                "director": {
-                                    "name": "Florian Henckel",
-                                    "bio": "Florian Maria Georg Christian Graf Henckel von Donnersmarck is an Academy Award-winning German and Austrian film director.",
-                                    "birth": "1973"
-                                },
-                                "imageURL": "https://images.app.goo.gl/FQ9XLDjW5DRKriBv8"
-                            },
-                            {
-                                "id": "650947236f498361566d4390",
-                                "title": "The Post",
-                                "description": "the Post is a 2017 American semi-fiction historical political thriller film about The Washington Post and the publication of the Pentagon Papers. It was directed and produced by Steven Spielberg, and written by Liz Hannah and Josh Singer.",
-                                "genre": {
-                                    "name": "Historical drama",
-                                    "description": "Historical drama can be differentiated from historical fiction, which generally present fictional characters and events against a backdrop of historical events."
-                                },
-                                "director": {
-                                    "name": "Steven Spielberg",
-                                    "bio": "Steven Allan Spielberg is an American film director, producer, and screenwriter.",
-                                    "birth": "1946"
-                                },
-                                "imageURL": "https://images.app.goo.gl/xfzoLKC4hV4Z4nFL9"
-                            }
-                        ]
-                    </code>
-                </pre>
+                    <td>None</td>
+                    <td>A JSON object containing an array of all movies.</td>
                 </tr>
+                <tr>
+                    <td colspan="5">
+                        <pre><code>[
+    {
+        "id": "6091a1e04f5d0f21b2b4f3f6",
+        "title": "The Lives of Others",
+        "description": "In 1984 East Berlin, an agent of the secret police, conducting surveillance on a writer and his lover, finds himself becoming increasingly absorbed by their lives.",
+        "genre": {
+            "name": "Drama",
+            "description": "In film and television, drama is a category or genre of narrative fiction (or semi-fiction) intended to be more serious than humorous in tone."
+        },
+        "director": {
+            "name": "Florian Henckel",
+            "bio": "Florian Maria Georg Christian Graf Henckel von Donnersmarck is an Academy Award-winning German and Austrian film director.",
+            "birth": "1973"
+        },
+        "imageURL": "https://images.app.goo.gl/FQ9XLDjW5DRKriBv8"
+    },
+    {
+        "id": "650947236f498361566d4390",
+        "title": "The Post",
+        "description": "The Post is a 2017 American semi-fiction historical political thriller film about The Washington Post and the publication of the Pentagon Papers. It was directed and produced by Steven Spielberg, and written by Liz Hannah and Josh Singer.",
+        "genre": {
+            "name": "Historical drama",
+            "description": "Historical drama can be differentiated from historical fiction, which generally present fictional characters and events against a backdrop of historical events."
+        },
+        "director": {
+            "name": "Steven Spielberg",
+            "bio": "Steven Allan Spielberg is an American film director, producer, and screenwriter.",
+            "birth": "1946"
+        },
+        "imageURL": "https://images.app.goo.gl/xfzoLKC4hV4Z4nFL9"
+    }
+]</code></pre>
+                    </td>
+                </tr>
+
+                <!-- Get movie by title -->
                 <tr>
                     <td>Get data about a single movie by title</td>
-                    <td>/movies/:Title</td>
+                    <td>/movies/title/:Title</td>
                     <td>GET</td>
                     <td>None</td>
-                    <td>A JSON object holding data about a single movie, containing description, genre, director, image
-                        URL, and
-                        whether its featured or not property. Example:
-                        <pre>
-                            <code>
-                            {
-                                "Title": "The Lives of Others",
-                                "Description": "In 1984, when an East German Stasi agent is ordered to spy on a writer...",
-                                "Genre": {
-                                    "Name": "Drama",
-                                    "Description": "In film and television, drama is a category or genre of narrative fiction..."
-                                },
-                                "Director": {
-                                    "Name": "Florian Henckel"
-                                },
-                                "ImageURL": "https://images.app.goo.gl/tukE2gj2t1MPqeL7A",
-                                "Featured": true
-                            }
-                        </code>
-                    </pre>
-                    </td>
+                    <td>A JSON object containing data about a single movie.</td>
                 </tr>
                 <tr>
-                    <td>Get data about a genre by genre's name</td>
-                    <td>/movies/genre/:genreName</td>
-                    <td>GET</td>
-                    <td>none</td>
-                    <td>A JSON object holding data about a genre containing name and description properties. Example:
-                        <pre>
-                            <code>
-                                {
-                                    "Genre": {
-                                        "Name": "Drama",
-                                        "Description": "In film and television, drama is a category or genre of narrative fiction..."
-                                    }
-                                }
-                        </code>
-                    </pre>
+                    <td colspan="5">
+                        <pre><code>{
+    "Title": "The Lives of Others",
+    "Description": "In 1984, when an East German Stasi agent is ordered to spy on a writer...",
+    "Genre": {
+        "Name": "Drama",
+        "Description": "In film and television, drama is a category or genre of narrative fiction..."
+    },
+    "Director": {
+        "Name": "Florian Henckel"
+    },
+    "ImageURL": "https://images.app.goo.gl/tukE2gj2t1MPqeL7A",
+    "Featured": true
+}</code></pre>
                     </td>
                 </tr>
-                <tr>
-                    <td>Get all movies by a director</td>
-                    <td>/movies/directors/:directorName/movies</td>
-                    <td>GET</td>
-                    <td>none</td>
-                    <td>A JSON array holding objects, each representing a movie by the specified director. Example:
-                        <pre>
-                            <code>
-                        [
-                            {
-                                "id": "6091a1e04f5d0f21b2b4f3f6",
-                                "title": "The Lives of Others",
-                                "description": "In 1984 East Berlin, an agent of the secret police...",
-                                {
-                                    "Name": "Florian Henckel",
-                                    "Bio": "Florian Maria Georg Christian Graf Henckel von Donnersmarck is an Academy Award-winning German and Austrian film director.",
-                                    "Birth": "1973"
-                                }
-                                "imageURL": "https://images.app.goo.gl/FQ9XLDjW5DRKriBv8"
-                            },
-                            {
-                                "id": "6091a1e04f5d0f21b2b4f3f7",
-                                "title": "The Tourist",
-                                "description": "Revolves around Frank, an American tourist visiting Italy to mend a broken heart. Elise is an extraordinary woman who deliberately crosses his path.",
-                                "director": {
-                                    "name": "Florian Henckel",
-                                    "bio": "Florian Maria Georg Christian Graf Henckel von Donnersmarck is an Academy Award-winning German and Austrian film director.",
-                                    "birth": "1973"
-                                },
-                                "imageURL": "https://images.app.goo.gl/EeW4Dd3QXtAGfmqn9"
-                            }
-                        ]
-                    </code>
-                </pre>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Get data about a director by director's name</td>
-                    <td>/movies/directors/:directorName</td>
-                    <td>GET</td>
-                    <td>none</td>
-                    <td>A JSON object holding data about a director. Example:
-                        <pre>
-                            <code>
-                                {
-                                    "Name": "Florian Henckel",
-                                    "Bio": "Florian Maria Georg Christian Graf Henckel von Donnersmarck is an Academy Award-winning German and Austrian film director.",
-                                    "Birth": "1973"
-                                }
-                    </code>
-                </pre>
-                    </td>
-                </tr>
-                <tr>
-                    <td>get all users</td>
-                    <td>/users</td>
-                    <td>get</td>
-                    <td>JSON object showing all users:
-                        <pre>
-                            <code>
-                                [{
-    "_id": "650a80a5940ff76d61be79dc",
-    "Username": "john",
-    "Password": "john123",
-    "Email": "john@gmail.com",
-    "Birthday": "1988-10-08T23:00:00.000Z",
-    "FavoriteMovies": [
-        "Good Bye, Lenin",
-        "The Lives of Others" ],
-},
-{
-    "_id": "650a80d6940ff76d61be79dd",
-    "Username": "jane",
-    "Password": "jane123",
-    "Email": "jane@gmail.com",
-    "Birthday": "1973-06-03T23:00:00.000Z",
-    "FavoriteMovies": [
-        "The Lives of Others"
-    ],
-    "FavoriteMovies": [
-        "650947b56f498361566d4391"
-    ]},
-{
-    "_id": "650a8125940ff76d61be79df",
-    "Username": "sara",
-    "Password": "sara123",
-    "Email": "sara@gmail.com",
-    "Birthday": "1999-05-01T22:00:00.000Z",
-    "FavoriteMovies": [
-        "The Post"
-    ],
-},
-{
-    "_id": "650a8139940ff76d61be79e0",
-    "Username": "joud",
-    "Password": "joud123",
-    "Email": "joud@gmail.com",
-    "Birthday": "1984-08-03T22:00:00.000Z",
-    "FavoriteMovies": [
-        "In the mood for love"
-    ]
-}
-]
-                    </code>
-                </pre>
-                    </td>
 
+                <!-- Get movies by genre -->
+                <tr>
+                    <td>Get data about movies by genre</td>
+                    <td>/movies/genre/:Genre</td>
+                    <td>GET</td>
+                    <td>None</td>
+                    <td>A JSON object containing an array of movies by genre.</td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <pre><code>[
+    {
+        "id": "6091a1e04f5d0f21b2b4f3f6",
+        "title": "The Lives of Others",
+        "description": "In 1984 East Berlin, an agent of the secret police, conducting surveillance on a writer and his lover...",
+        "genre": {
+            "name": "Drama",
+            "description": "Drama genre description..."
+        },
+        "director": {
+            "name": "Florian Henckel",
+            "bio": "Florian Maria Georg Christian Graf Henckel von Donnersmarck is an Academy Award-winning German and Austrian film director.",
+            "birth": "1973"
+        },
+        "imageURL": "https://images.app.goo.gl/FQ9XLDjW5DRKriBv8"
+    }
+]</code></pre>
+                    </td>
+                </tr>
+
+                <!-- Get all users -->
+                <tr>
+                    <td>Get a list of all users</td>
+                    <td>/users</td>
+                    <td>GET</td>
+                    <td>None</td>
+                    <td>A JSON object containing an array of all users.</td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <pre><code>[
+    {
+        "_id": "650a80a5940ff76d61be79dc",
+        "Username": "john",
+        "Password": "john123",
+        "Email": "john@gmail.com",
+        "Birthday": "1988-10-08T23:00:00.000Z",
+        "FavoriteMovies": ["Good Bye, Lenin", "The Lives of Others"]
+    },
+    {
+        "_id": "650a80d6940ff76d61be79dd",
+        "Username": "jane",
+        "Password": "jane123",
+        "Email": "jane@gmail.com",
+        "Birthday": "1973-06-03T23:00:00.000Z",
+        "FavoriteMovies": ["The Lives of Others"]
+    }
+]</code></pre>
+                    </td>
+                </tr>
+
+                <!-- Add a new user -->
                 <tr>
                     <td>Add a new user</td>
                     <td>/users</td>
                     <td>POST</td>
-                    <td>A JSON object holding user data, structured like this:
-                        <pre>
-                            <code>
-                                {
-                                    "id": "650a80a5940ff76d61be79dc",
-                                    "UserName": "john",
-                                    "Email":"john@gmail.com",
-                                    "Password": "john123",
-                                    "FavoriteMovies": ["the lives of others"]
-                                }
-                    </code>
-                </pre>
-                    </td>
-                    <td>A JSON object holding user data plus an ID and an array for placing favorite movies:
-                        <pre>
-                            <code>
-                        {
-                            "id": "650a80a5940ff76d61be79dc",
-                            "UserName": "john",
-                            "Email":"john@gmail.com",
-                            "Password": "john123",
-                            "FavoriteMovies": ["the lives of others"]
-                        }
-                    </code>
-                </pre>
-                    </td>
+                    <td>A JSON object containing user data.</td>
+                    <td>A JSON object containing the newly created user data with an ID and an array for favorite
+                        movies.</td>
                 </tr>
                 <tr>
-                    <td>Update user info</td>
-                    <td>/users/:id</td>
+                    <td colspan="5">
+                        <pre><code>{
+    "id": "650a80a5940ff76d61be79dc",
+    "UserName": "john",
+    "Email": "john@gmail.com",
+    "Password": "john123",
+    "FavoriteMovies": ["The Lives of Others"]
+}</code></pre>
+                    </td>
+                </tr>
+
+                <!-- Update user information -->
+                <tr>
+                    <td>Update user information</td>
+                    <td>/users/:Username</td>
                     <td>PUT</td>
-                    <td>A JSON object holding the user info that should be changed. It should contain at least one of
-                        the following key/value pairs:
-                        <pre>
-                            <code>
-                        {
-                            "Username": "New Username",
-                            "Email":"New Email",
-                            "Password": "New Password"
-                            "FavoriteMovies": ["the lives of others"]
-                        }
-                    </code>
-                </pre>
-                    </td>
-                    <td>A JSON object holding all user info with all key/values pair updated:
-                        <pre>
-                            <code>
-                        {
-                            "id": "650a80a5940ff76d61be79dc",
-                            "Username": "New Username",
-                            "Email":"New Email",
-                            "Password": "New Password",
-                            "FavoriteMovies": ["The Lives of Others"]
-                        }
-                    </code>
-                </pre>
-                    </td>
+                    <td>A JSON object containing the user information to update.</td>
+                    <td>A JSON object containing the updated user information.</td>
                 </tr>
                 <tr>
-                    <td>Add a movie to the user's favorite list</td>
-                    <td>/users/:id/:movieTitle</td>
+                    <td colspan="5">
+                        <pre><code>{
+    "id": "650a80a5940ff76d61be79dc",
+    "Username": "New Username",
+    "Email": "newemail@gmail.com",
+    "Password": "newpassword123",
+    "FavoriteMovies": ["The Lives of Others"]
+}</code></pre>
+                    </td>
+                </tr>
+
+                <!-- Add a movie to user's favorite list -->
+                <tr>
+                    <td>Add a movie to a user's favorite list</td>
+                    <td>/users/:username/favorites/:movieId</td>
                     <td>POST</td>
                     <td>None</td>
-                    <td>A JSON object holding all user info with all key/values pair updated:
-                        <pre>
-                            <code>
-                        {
-                            "id": "650a80a5940ff76d61be79dc",
-                            "Username": "john",
-                            "Email":"john@gmail.com",
-                            "Password": "johnd123",
-                            "FavoriteMovies": ["The Lives of Others"]
-                        }
-                    </code>
-                </pre>
+                    <td>A JSON object containing the updated user information with the movie added to favorites.</td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <pre><code>{
+    "id": "650a80a5940ff76d61be79dc",
+    "Username": "john",
+    "Email": "john@gmail.com",
+    "Password": "john123",
+    "FavoriteMovies": ["The Lives of Others", "The Post"]
+}</code></pre>
+                    </td>
+                </tr>
+
+                <!-- Remove a movie from user's favorite list -->
+                <tr>
+                    <td>Remove a movie from a user's favorite list</td>
+                    <td>/users/:username/movies/:movieId</td>
+                    <td>DELETE</td>
+                    <td>None</td>
+                    <td>A JSON object containing the updated user information with the movie removed from favorites.
                     </td>
                 </tr>
                 <tr>
-                    <td>Remove a movie from the user's favorite list</td>
-                    <td>/users/:id/:movieTitle</td>
-                    <td>DELETE</td>
-                    <td>None</td>
-                    <td>A JSON object holding all user info with all key/values pair updated:
-                        <pre>
-                            <code>
-                        {
-                            "id": "650a80a5940ff76d61be79dc",
-                            "Username": "john",
-                            "Email":"john@gmail.com",
-                            "Password": "john123",
-                            "FavoriteMovies": ["The Lives of Others"]
-                        }
-                    </code>
-                </pre>
+                    <td colspan="5">
+                        <pre><code>{
+    "id": "650a80a5940ff76d61be79dc",
+    "Username": "john",
+    "Email": "john@gmail.com",
+    "Password": "john123",
+    "FavoriteMovies": ["The Lives of Others"]
+}</code></pre>
                     </td>
                 </tr>
+
+                <!-- Delete a user -->
                 <tr>
                     <td>Delete a user</td>
-                    <td>/users/:id</td>
+                    <td>/users/:Username</td>
                     <td>DELETE</td>
                     <td>None</td>
-                    <td>A JSON object confirming the user deletion.</td>
+                    <td>A JSON object confirming the user's deletion.</td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <pre><code>{
+    "message": "User deleted successfully."
+}</code></pre>
+                    </td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-
-    <!-- imported scripts: jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- Imported scripts: jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        integrity="sha384-UO2eT0CpHqdSJQ6Hjty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"

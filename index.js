@@ -18,16 +18,38 @@ app.use(morgan("combined"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const passport = require("passport");
-//add login route
+// Add login route
 let auth = require("./auth")(app);
-app.get("/", (req, res) => {
-  res.send("Welcome to my movie app!");
-});
 
 app.use(express.static("public"));
 
 mongoose.connect(process.env.DB_URL);
 
+/**
+ * @module routes
+ */
+
+/**
+ * GET: Returns welcome message for the main route
+ * @name WelcomeMessage
+ * @function
+ * @memberof module:routes
+ * @param {object} req - Express request object
+ * @param {object} res - Express response object
+ */
+app.get("/", (req, res) => {
+  res.send("Welcome to my movie app!");
+});
+
+/**
+ * GET: Returns a list of all movies
+ * @name GetMovies
+ * @function
+ * @memberof module:routes
+ * @param {object} req - Express request object
+ * @param {object} res - Express response object
+ * @requires passport
+ */
 app.get(
   "/movies",
   passport.authenticate("jwt", { session: false }),
@@ -44,6 +66,15 @@ app.get(
   }
 );
 
+/**
+ * GET: Returns a specific movie by title
+ * @name GetMovieByTitle
+ * @function
+ * @memberof module:routes
+ * @param {object} req - Express request object
+ * @param {object} res - Express response object
+ * @requires passport
+ */
 app.get(
   "/movies/title/:Title",
   passport.authenticate("jwt", { session: false }),
@@ -63,6 +94,15 @@ app.get(
   }
 );
 
+/**
+ * GET: Returns a list of movies by genre
+ * @name GetMoviesByGenre
+ * @function
+ * @memberof module:routes
+ * @param {object} req - Express request object
+ * @param {object} res - Express response object
+ * @requires passport
+ */
 app.get(
   "/movies/genre/:Genre",
   passport.authenticate("jwt", { session: false }),
@@ -84,6 +124,15 @@ app.get(
   }
 );
 
+/**
+ * GET: Returns a list of all users
+ * @name GetUsers
+ * @function
+ * @memberof module:routes
+ * @param {object} req - Express request object
+ * @param {object} res - Express response object
+ * @requires passport
+ */
 app.get(
   "/users",
   passport.authenticate("jwt", { session: false }),
@@ -100,32 +149,44 @@ app.get(
   }
 );
 
-// Get a user by username
+/**
+ * GET: Returns data of a single user by username
+ * @name GetUserByUsername
+ * @function
+ * @memberof module:routes
+ * @param {object} req - Express request object
+ * @param {object} res - Express response object
+ * @requires passport
+ */
 app.get(
   "/users/:Username",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    Users.findOne({ Username: req.params.Username })
-      .then((user) => {
-        if (!user) {
-          return res
-            .status(404)
-            .send("Error: " + req.params.Username + " was not found");
-        } else {
-          res.json(user);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      });
+    try {
+      const user = await Users.findOne({ Username: req.params.Username });
+      if (!user) {
+        return res
+          .status(404)
+          .send("Error: " + req.params.Username + " was not found");
+      }
+      res.json(user);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    }
   }
 );
 
-//creat user
+/**
+ * POST: Create a new user
+ * @name CreateUser
+ * @function
+ * @memberof module:routes
+ * @param {object} req - Express request object
+ * @param {object} res - Express response object
+ */
 app.post(
   "/users",
-
   [
     check("Username", "Username is required").isLength({ min: 5 }),
     check(
@@ -136,72 +197,73 @@ app.post(
     check("Email", "Email does not appear to be valid").isEmail(),
   ],
   async (req, res) => {
-    // check the validation object for errors
-    let errors = validationResult(req);
-
+    const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
 
     let hashedPassword = Users.hashPassword(req.body.Password);
-    await Users.findOne({ Username: req.body.Username }) // Search to see if a user with the requested username already exists
-      .then((user) => {
-        if (user) {
-          //If the user is found, send a response that it already exists
-          return res.status(400).send(req.body.Username + " already exists");
-        } else {
-          Users.create({
-            Username: req.body.Username,
-            Password: hashedPassword,
-            Email: req.body.Email,
-            Birthday: req.body.Birthday,
-          })
-            .then((user) => {
-              res.status(201).json(user);
-            })
-            .catch((error) => {
-              console.error(error);
-              res.status(500).send("Error: " + error);
-            });
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        res.status(500).send("Error: " + error);
+    try {
+      const user = await Users.findOne({ Username: req.body.Username });
+      if (user) {
+        return res.status(400).send(req.body.Username + " already exists");
+      }
+      const newUser = await Users.create({
+        Username: req.body.Username,
+        Password: hashedPassword,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday,
       });
-  }
-);
-// Add a movie to a user's list of favorites
-app.post(
-  "/users/:username/favorites/:movieId",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Users.findOneAndUpdate(
-      { Username: req.params.username },
-      {
-        $push: { FavoriteMovies: req.params.movieId },
-      },
-      { new: true }
-    )
-      .then((updatedUser) => {
-        res.status(200).json(updatedUser);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error: " + err);
-      });
+      res.status(201).json(newUser);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Error: " + error);
+    }
   }
 );
 
-// Update user information
+/**
+ * POST: Add a movie to a user's list of favorites
+ * @name AddFavoriteMovie
+ * @function
+ * @memberof module:routes
+ * @param {object} req - Express request object
+ * @param {object} res - Express response object
+ * @requires passport
+ */
+app.post(
+  "/users/:username/favorites/:movieId",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const updatedUser = await Users.findOneAndUpdate(
+        { Username: req.params.username },
+        { $push: { FavoriteMovies: req.params.movieId } },
+        { new: true }
+      );
+      res.status(200).json(updatedUser);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    }
+  }
+);
+
+/**
+ * PUT: Update user information
+ * @name UpdateUser
+ * @function
+ * @memberof module:routes
+ * @param {object} req - Express request object
+ * @param {object} res - Express response object
+ * @requires passport
+ */
 app.put(
   "/users/:Username",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    //handle errors of validation
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      //status code 422 - unprocessable content
       return res.status(422).json({ errors: errors.array() });
     }
     if (req.user.Username !== req.params.Username) {
@@ -209,8 +271,7 @@ app.put(
     }
     try {
       const { Username, Password, Email, Birthday, FavoriteMovies } = req.body;
-      const saltRounds = 10;
-      const hashedPassword = await Users.hashPassword(Password, saltRounds);
+      const hashedPassword = await Users.hashPassword(Password);
       const updateUser = await Users.findOneAndUpdate(
         { Username: req.params.Username },
         {
@@ -232,76 +293,119 @@ app.put(
   }
 );
 
-// Remove a movie to a user's list of favorites
+/**
+ * DELETE: Remove a movie from a user's list of favorites
+ * @name RemoveFavoriteMovie
+ * @function
+ * @memberof module:routes
+ * @param {object} req - Express request object
+ * @param {object} res - Express response object
+ * @requires passport
+ */
 app.delete(
   "/users/:Username/movies/:MovieID",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    Users.findOneAndUpdate(
-      { Username: req.params.Username },
-      {
-        $pull: { FavoriteMovies: req.params.MovieID },
-      },
-      { new: true }
-    )
-      .then((updatedUser) => {
-        if (!updatedUser) {
-          return res.status(404).send("Error: User not found");
-        } else {
-          res.json(updatedUser);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        res.status(500).send("Error: " + error);
-      });
-  }
-);
-// Backend route to get favorite movies for a user
-app.get(
-  '/users/:Username/movies',
-  passport.authenticate('jwt', { session: false }),
-  async (req, res) => {
     try {
-      const user = await Users.findOne({ Username: req.params.Username }).populate('FavoriteMovies');
-      if (!user) {
-        return res.status(404).send('User not found');
+      const updatedUser = await Users.findOneAndUpdate(
+        { Username: req.params.Username },
+        { $pull: { FavoriteMovies: req.params.MovieID } },
+        { new: true }
+      );
+      if (!updatedUser) {
+        return res.status(404).send("Error: User not found");
       }
-      res.status(200).json(user.FavoriteMovies);
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
+      res.json(updatedUser);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Error: " + error);
     }
   }
 );
 
+/**
+ * GET: Returns favorite movies for a user
+ * @name GetUserFavoriteMovies
+ * @function
+ * @memberof module:routes
+ * @param {object} req - Express request object
+ * @param {object} res - Express response object
+ * @requires passport
+ */
+app.get(
+  "/users/:Username/movies",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const user = await Users.findOne({
+        Username: req.params.Username,
+      }).populate("FavoriteMovies");
+      if (!user) {
+        return res.status(404).send("User not found");
+      }
+      res.status(200).json(user.FavoriteMovies);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    }
+  }
+);
 
-// Delete a user by username
+/**
+ * DELETE: Deletes a user by username
+ * @name DeleteUser
+ * @function
+ * @memberof module:routes
+ * @param {object} req - Express request object
+ * @param {object} res - Express response object
+ * @requires passport
+ */
 app.delete(
   "/users/:Username",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    await Users.findOneAndRemove({ Username: req.params.Username })
-      .then((user) => {
-        if (!user) {
-          res.status(400).send(req.params.Username + " was not found");
-        } else {
-          res.status(200).send(req.params.Username + " was deleted.");
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error: " + err);
+    try {
+      const user = await Users.findOneAndRemove({
+        Username: req.params.Username,
       });
+      if (!user) {
+        return res.status(400).send(req.params.Username + " was not found");
+      }
+      res.status(200).send(req.params.Username + " was deleted.");
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    }
   }
 );
 
+/**
+ * Error handler middleware
+ * @name ErrorHandler
+ * @function
+ * @memberof module:routes
+ * @param {object} err - Error object
+ * @param {object} req - Express request object
+ * @param {object} res - Express response object
+ * @param {function} next - Express next middleware function
+ */
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something went wrong!");
   next();
 });
 
+/**
+ * @module server
+ */
+
+/**
+ * Listener for HTTP requests
+ * @name Listen
+ * @function
+ * @memberof module:server
+ * @param {number} port - Port number
+ */
 const port = process.env.PORT || 8080;
 app.listen(port, "0.0.0.0", () => {
   console.log("Listening on Port " + port);
